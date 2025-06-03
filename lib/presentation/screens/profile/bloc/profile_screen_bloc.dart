@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:coursera/domain/api/course/course_api_client.dart';
 import 'package:coursera/domain/api/user/user_api_client.dart';
 import 'package:coursera/domain/model/course/course.dart';
-import 'package:coursera/domain/model/course/update_course_request.dart';
 import 'package:coursera/domain/model/profile/profile.dart';
 import 'package:coursera/domain/model/user/user.dart';
-import 'package:coursera/presentation/screens/profile/profile_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -21,15 +17,20 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
   ProfileScreenBloc(this.courseApiRepo, this.userApiRepo)
       : super(ProfileScreenInitialState()) {
     on<ProfileScreenLoadEvent>(_onLoadProfile);
+    on<ProfileScreenDeleteEvent>(_onDeleteCourse);
   }
 
   void init() {
     debugPrint("||||||");
-    loadCourses();
+    loadData();
   }
 
-  void loadCourses() {
+  void loadData() {
     add(ProfileScreenLoadEvent());
+  }
+
+  void deleteCourse(int id, Function onDelete) {
+    add(ProfileScreenDeleteEvent(id: id, onDeleteSuccessful: onDelete));
   }
 
   Future<void> _onLoadProfile(
@@ -44,6 +45,17 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
     } catch (e) {
       debugPrint(e.toString());
       debugPrint("||| error |||");
+      emit(ProfileScreenErrorState(e.toString()));
+    }
+  }
+
+  Future<void> _onDeleteCourse(
+      ProfileScreenDeleteEvent event, Emitter<ProfileScreenState> emit) async {
+    try {
+      await courseApiRepo.deleteCourse(event.id);
+      event.onDeleteSuccessful();
+    } catch (e) {
+      debugPrint("||| error: $e |||");
       emit(ProfileScreenErrorState(e.toString()));
     }
   }

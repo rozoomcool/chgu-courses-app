@@ -11,10 +11,12 @@ class CourseInfoCard extends StatelessWidget {
       required this.rating,
       required this.peopleCount,
       this.onTap,
-      this.onDelete});
+      this.onDelete,
+      required this.imageUrl});
 
   final String title;
   final String description;
+  final String imageUrl;
   final double rating;
   final int peopleCount;
   final Function? onTap;
@@ -42,9 +44,10 @@ class CourseInfoCard extends StatelessWidget {
                     height: 72,
                     width: 72,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.blueGrey,
-                    ),
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.blueGrey,
+                        image: DecorationImage(
+                            image: NetworkImage(imageUrl), fit: BoxFit.cover)),
                   ),
                   const SizedBox(
                     width: 12,
@@ -101,7 +104,9 @@ class CourseInfoCard extends StatelessWidget {
                     children: [
                       onDelete != null
                           ? TextButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                onDelete!();
+                              },
                               label: Text(
                                 "Delete",
                                 style: Theme.of(context)

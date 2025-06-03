@@ -45,6 +45,8 @@ dependencies:
   hugeicons: ^0.0.11
   unicons: ^3.0.0
   shimmer: ^3.0.0
+  loading_animation_widget: ^1.3.0
+  custom_refresh_indicator: ^4.0.1
 
 dev_dependencies:
   flutter_test:

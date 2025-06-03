@@ -29,15 +29,22 @@ class CreateCourseBloc extends Bloc<CreateCourseEvent, CreateCourseState> {
       CreateCourseCreateEvent event, Emitter<CreateCourseState> emit) async {
     emit(CreateCourseLoadingState());
     try {
-      final course = await courseApiRepo.createCourse(
+      final response = await courseApiRepo.createCourse(
           event.file, event.title, event.description);
-          
-      emit(CreateCourseCreatedState(course: course));
+      
+      if (response.response.statusCode == 200 || response.response.statusCode == 201) {
+      emit(CreateCourseCreatedState(course: response.data));
+
+      } else {
+        debugPrint("||| error: ${response.response.statusCode.toString()} |||");
+        emit(CreateCourseErrorState(response.response.statusMessage.toString()));
+      }
+
     } on DioException catch (e) {
       debugPrint("||| error ${e.message} |||");
       emit(CreateCourseErrorState(e.toString()));
     } catch (e) {
-      debugPrint("||| error |||");
+      debugPrint("||| error: $e |||");
       emit(CreateCourseErrorState(e.toString()));
     }
   }

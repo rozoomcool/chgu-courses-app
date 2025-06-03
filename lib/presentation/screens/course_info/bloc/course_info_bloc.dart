@@ -11,31 +11,24 @@ class CourseInfoBloc extends Bloc<CourseInfoEvent, CourseInfoState> {
   final CourseApiClient courseApiRepo;
 
   CourseInfoBloc(this.courseApiRepo) : super(CourseInfoInitialState()) {
-    // on<CreateCourseCreateEvent>(_onCreateCourse);
+    on<CourseInfoLoadEvent>(_onCourseInfoLoad);
   }
 
-  void init() {
-    debugPrint("||||||");
-    loadCourses();
+  void loadCourse(int id) {
+    add(CourseInfoLoadEvent(id: id));
   }
 
-  void loadCourses() {
-    // add(CreateCourseCreateEvent());
-  }
+  Future<void> _onCourseInfoLoad(
+      CourseInfoLoadEvent event, Emitter<CourseInfoState> emit) async {
+    emit(CourseInfoLoadingState());
+    try {
+      final course = await courseApiRepo.getCourse(event.id);
 
-  // Future<void> _onCreateCourse(
-      // CreateCourseCreateEvent event, Emitter<CreateCourseState> emit) async {
-    // emit(ProfileScreenLoadingState());
-    // try {
-    //   final user = await userApiRepo.findOne();
-    //   final courses = await courseApiRepo.getByTeacherId(user.id);
-    //   // debugPrint(request.toString());
-    //   emit(ProfileScreenLoadedState(
-    //       user: user, profile: user.profile!, courses: courses));
-    // } catch (e) {
-    //   debugPrint(e.toString());
-    //   debugPrint("||| error |||");
-    //   emit(ProfileScreenErrorState(e.toString()));
-    // }
-  // }
+      emit(CourseInfoLoadedState(course: course));
+    } catch (e) {
+      debugPrint(e.toString());
+      debugPrint("||| error |||");
+      emit(CourseInfoErrorState(e.toString()));
+    }
+  }
 }

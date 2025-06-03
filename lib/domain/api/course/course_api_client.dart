@@ -32,7 +32,7 @@ abstract class CourseApiClient {
 
   @POST("/course/")
   @MultiPart()
-  Future<Course> createCourse(
+  Future<HttpResponse<Course>> createCourse(
     @Part(name: "file") File file,
     @Part(name: "title") String title,
     @Part(name: "description") String description,
@@ -45,5 +45,5 @@ abstract class CourseApiClient {
   );
 
   @DELETE("/course/{id}")
-  Future<void> deleteCourse(@Path("id") int id);
+  Future<HttpResponse<Course>> deleteCourse(@Path("id") int id);
 }

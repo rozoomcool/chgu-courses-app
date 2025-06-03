@@ -176,7 +176,7 @@ class _CourseApiClient implements CourseApiClient {
   }
 
   @override
-  Future<Course> createCourse(
+  Future<HttpResponse<Course>> createCourse(
     File file,
     String title,
     String description,
@@ -200,7 +200,7 @@ class _CourseApiClient implements CourseApiClient {
       'description',
       description,
     ));
-    final _options = _setStreamType<Course>(Options(
+    final _options = _setStreamType<HttpResponse<Course>>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -225,7 +225,8 @@ class _CourseApiClient implements CourseApiClient {
       errorLogger?.logError(e, s, _options);
       rethrow;
     }
-    return _value;
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   @override
@@ -266,12 +267,12 @@ class _CourseApiClient implements CourseApiClient {
   }
 
   @override
-  Future<void> deleteCourse(int id) async {
+  Future<HttpResponse<Course>> deleteCourse(int id) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
-    final _options = _setStreamType<void>(Options(
+    final _options = _setStreamType<HttpResponse<Course>>(Options(
       method: 'DELETE',
       headers: _headers,
       extra: _extra,
@@ -287,7 +288,16 @@ class _CourseApiClient implements CourseApiClient {
           _dio.options.baseUrl,
           baseUrl,
         )));
-    await _dio.fetch<void>(_options);
+    final _result = await _dio.fetch<Map<String, dynamic>>(_options);
+    late Course _value;
+    try {
+      _value = Course.fromJson(_result.data!);
+    } on Object catch (e, s) {
+      errorLogger?.logError(e, s, _options);
+      rethrow;
+    }
+    final httpResponse = HttpResponse(_value, _result);
+    return httpResponse;
   }
 
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {

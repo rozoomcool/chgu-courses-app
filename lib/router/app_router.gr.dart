@@ -22,9 +22,13 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     CourseInfoRoute.name: (routeData) {
+      final args = routeData.argsAs<CourseInfoRouteArgs>();
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const CourseInfoScreen(),
+        child: CourseInfoScreen(
+          key: args.key,
+          id: args.id,
+        ),
       );
     },
     CreateCourseRoute.name: (routeData) {
@@ -88,16 +92,40 @@ class AuthRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [CourseInfoScreen]
-class CourseInfoRoute extends PageRouteInfo<void> {
-  const CourseInfoRoute({List<PageRouteInfo>? children})
-      : super(
+class CourseInfoRoute extends PageRouteInfo<CourseInfoRouteArgs> {
+  CourseInfoRoute({
+    Key? key,
+    required int id,
+    List<PageRouteInfo>? children,
+  }) : super(
           CourseInfoRoute.name,
+          args: CourseInfoRouteArgs(
+            key: key,
+            id: id,
+          ),
           initialChildren: children,
         );
 
   static const String name = 'CourseInfoRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<CourseInfoRouteArgs> page =
+      PageInfo<CourseInfoRouteArgs>(name);
+}
+
+class CourseInfoRouteArgs {
+  const CourseInfoRouteArgs({
+    this.key,
+    required this.id,
+  });
+
+  final Key? key;
+
+  final int id;
+
+  @override
+  String toString() {
+    return 'CourseInfoRouteArgs{key: $key, id: $id}';
+  }
 }
 
 /// generated route for

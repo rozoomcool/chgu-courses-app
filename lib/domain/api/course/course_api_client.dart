@@ -12,19 +12,19 @@ part 'course_api_client.g.dart';
 abstract class CourseApiClient {
   factory CourseApiClient(Dio dio, {String baseUrl}) = _CourseApiClient;
 
-  @GET("/course")
+  @GET("/course/")
   Future<List<Course>> getCourses({
     @Query("skip") int? skip,
     @Query("take") int? take
   });
 
-  @GET("/course/all")
+  @GET("/course")
   Future<List<Course>> getAllCoursesDeep({
     @Query("skip") int? skip,
     @Query("take") int? take
   });
 
-  @GET("/course/teacher/{id}")
+  @GET("/course/all/teacher/{id}")
   Future<List<Course>> getByTeacherId(@Path("id") int id);
 
   @GET("/course/{id}")

@@ -12,10 +12,13 @@ class CreateCourseLoadingState extends CreateCourseState {
   List<Object?> get props => [];
 }
 
-class CreateCourseLoadedState extends CreateCourseState {
+class CreateCourseCreatedState extends CreateCourseState {
+  final Course course;
 
+  CreateCourseCreatedState({required this.course});
+  
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [course];
 }
 
 class CreateCourseErrorState extends CreateCourseState {
@@ -24,5 +27,5 @@ class CreateCourseErrorState extends CreateCourseState {
   CreateCourseErrorState(this.message);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }

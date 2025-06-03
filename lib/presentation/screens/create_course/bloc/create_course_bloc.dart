@@ -1,12 +1,8 @@
 import 'dart:io';
 
 import 'package:coursera/domain/api/course/course_api_client.dart';
-import 'package:coursera/domain/api/user/user_api_client.dart';
 import 'package:coursera/domain/model/course/course.dart';
-import 'package:coursera/domain/model/course/update_course_request.dart';
-import 'package:coursera/domain/model/profile/profile.dart';
-import 'package:coursera/domain/model/user/user.dart';
-import 'package:coursera/presentation/screens/profile/profile_screen.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -21,28 +17,28 @@ class CreateCourseBloc extends Bloc<CreateCourseEvent, CreateCourseState> {
     on<CreateCourseCreateEvent>(_onCreateCourse);
   }
 
-  void init() {
-    debugPrint("||||||");
-    loadCourses();
-  }
-
-  void loadCourses() {
-    add(CreateCourseCreateEvent());
+  void createCourse(
+      {required File file,
+      required String title,
+      required String description}) {
+    add(CreateCourseCreateEvent(
+        file: file, title: title, description: description));
   }
 
   Future<void> _onCreateCourse(
       CreateCourseCreateEvent event, Emitter<CreateCourseState> emit) async {
-    // emit(ProfileScreenLoadingState());
-    // try {
-    //   final user = await userApiRepo.findOne();
-    //   final courses = await courseApiRepo.getByTeacherId(user.id);
-    //   // debugPrint(request.toString());
-    //   emit(ProfileScreenLoadedState(
-    //       user: user, profile: user.profile!, courses: courses));
-    // } catch (e) {
-    //   debugPrint(e.toString());
-    //   debugPrint("||| error |||");
-    //   emit(ProfileScreenErrorState(e.toString()));
-    // }
+    emit(CreateCourseLoadingState());
+    try {
+      final course = await courseApiRepo.createCourse(
+          event.file, event.title, event.description);
+          
+      emit(CreateCourseCreatedState(course: course));
+    } on DioException catch (e) {
+      debugPrint("||| error ${e.message} |||");
+      emit(CreateCourseErrorState(e.toString()));
+    } catch (e) {
+      debugPrint("||| error |||");
+      emit(CreateCourseErrorState(e.toString()));
+    }
   }
 }

@@ -30,5 +30,5 @@ class ProfileScreenErrorState extends ProfileScreenState {
   ProfileScreenErrorState(this.message);
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [message];
 }

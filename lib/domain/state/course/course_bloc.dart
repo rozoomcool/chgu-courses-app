@@ -35,7 +35,6 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     emit(CourseLoading());
     try {
       final request = await repository.getCourses();
-      debugPrint(request.toString());
       emit(CourseLoaded(request));
     } catch (e) {
       debugPrint(e.toString());

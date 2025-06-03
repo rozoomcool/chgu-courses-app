@@ -43,7 +43,7 @@ class _CourseApiClient implements CourseApiClient {
     )
         .compose(
           _dio.options,
-          '/course',
+          '/course/',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -85,7 +85,7 @@ class _CourseApiClient implements CourseApiClient {
     )
         .compose(
           _dio.options,
-          '/course/all',
+          '/course',
           queryParameters: queryParameters,
           data: _data,
         )
@@ -120,7 +120,7 @@ class _CourseApiClient implements CourseApiClient {
     )
         .compose(
           _dio.options,
-          '/course/teacher/${id}',
+          '/course/all/teacher/${id}',
           queryParameters: queryParameters,
           data: _data,
         )

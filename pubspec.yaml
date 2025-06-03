@@ -1,0 +1,61 @@
+name: coursera
+description: "A new Flutter project."
+publish_to: "none"
+version: 0.1.0
+
+environment:
+  sdk: ^3.5.3
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.6
+  get_it: ^7.7.0
+  shared_preferences: ^2.2.3
+  flutter_animate: ^4.5.0
+  flutter_bloc: ^8.1.5
+  auto_route: ^8.1.1
+  font_awesome_flutter: ^10.7.0
+  auto_route_generator: ^8.0.0
+  equatable: ^2.0.5
+  google_fonts: ^6.2.1
+  dio: ^5.4.3+1
+  freezed_annotation: ^2.4.4
+  stomp_dart_client: ^2.0.0
+  web_socket_channel: ^2.4.5
+  flutter_map: ^6.1.0
+  latlong2: ^0.9.1
+  url_launcher: ^6.2.6
+  iconsax: ^0.0.8
+  flutter_custom_clippers: ^2.1.0
+  freezed: ^2.5.2
+  image_picker: ^1.1.2
+  flutter_image_compress: ^2.3.0
+  socket_io_client: ^2.0.3+1
+  path_provider: ^2.1.4
+  flutter_svg: ^2.0.10+1
+  dotted_border: ^3.0.1
+  intl: ^0.19.0
+  syncfusion_flutter_pdfviewer: ^27.1.53
+  webview_flutter: ^4.8.0
+  retrofit: ^4.4.1
+  meta: ^1.15.0
+  json_annotation: ^4.9.0
+  hugeicons: ^0.0.11
+  unicons: ^3.0.0
+  shimmer: ^3.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.11
+  json_serializable: ^6.8.0
+  retrofit_generator: '>=8.0.0 <10.0.0'
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/

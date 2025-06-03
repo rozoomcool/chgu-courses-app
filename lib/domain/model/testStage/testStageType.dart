@@ -1,0 +1,4 @@
+enum TestStageType {
+  OPTIONAL,
+  REQUIRED,
+}

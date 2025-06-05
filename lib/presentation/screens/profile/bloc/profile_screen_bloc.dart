@@ -37,6 +37,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
       ProfileScreenLoadEvent event, Emitter<ProfileScreenState> emit) async {
     emit(ProfileScreenLoadingState());
     try {
+      // await Future.delayed(Duration(milliseconds: 500));
       final user = await userApiRepo.findOne();
       final courses = await courseApiRepo.getByTeacherId(user.id);
       // debugPrint(request.toString());

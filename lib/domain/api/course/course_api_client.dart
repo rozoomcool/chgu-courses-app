@@ -13,22 +13,21 @@ abstract class CourseApiClient {
   factory CourseApiClient(Dio dio, {String baseUrl}) = _CourseApiClient;
 
   @GET("/course/")
-  Future<List<Course>> getCourses({
-    @Query("skip") int? skip,
-    @Query("take") int? take
-  });
+  Future<List<Course>> getCourses(
+      {@Query("skip") int? skip, @Query("take") int? take});
 
   @GET("/course")
-  Future<List<Course>> getAllCoursesDeep({
-    @Query("skip") int? skip,
-    @Query("take") int? take
-  });
+  Future<List<Course>> getAllCoursesDeep(
+      {@Query("skip") int? skip, @Query("take") int? take});
 
   @GET("/course/all/teacher/{id}")
   Future<List<Course>> getByTeacherId(@Path("id") int id);
 
   @GET("/course/{id}")
-  Future<Course> getCourse(@Path("id") int id);
+  Future<Course> getCourse(@Path("id") int id,
+      {@Query("teacher") bool teacher = false,
+      @Query("lessons") bool lessons = false,
+      @Query("students") bool students = false});
 
   @POST("/course/")
   @MultiPart()
@@ -38,11 +37,15 @@ abstract class CourseApiClient {
     @Part(name: "description") String description,
   );
 
-  @PATCH("/course/{id}")
-  Future<Course> updateCourse(
-    @Path("id") int id,
-    @Body() UpdateCourseRequest data,
-  );
+  @PUT("/course/{id}")
+  @MultiPart()
+  Future<Course> updateCourse({
+    @Path("id") required int id,
+    @Part(name: "file") File? file,
+    @Part() String? title,
+    @Part() String? description,
+    @Part() String? imageUrl,
+  });
 
   @DELETE("/course/{id}")
   Future<HttpResponse<Course>> deleteCourse(@Path("id") int id);

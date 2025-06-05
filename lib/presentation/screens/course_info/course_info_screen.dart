@@ -1,5 +1,7 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:coursera/presentation/screens/course_info/bloc/course_info_bloc.dart';
+import 'package:coursera/router/app_router.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:coursera/utils/constants.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
@@ -20,69 +22,203 @@ class CourseInfoScreen extends StatefulWidget {
 }
 
 class _CourseInfoScreenState extends State<CourseInfoScreen> {
+  void load() {
+    context.read<CourseInfoBloc>().loadCourse(widget.id);
+  }
+
   @override
   void initState() {
     super.initState();
-    context.read<CourseInfoBloc>().loadCourse(widget.id);
+    load();
+    context.router.addListener(() {
+      load();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<CourseInfoBloc, CourseInfoState>(
         builder: (context, state) {
-      return Scaffold(
-        body: CustomMaterialIndicator(
-          useMaterialContainer: false,
-          // backgroundColor: Colors.transparent,
-          // elevation: 0,
-          indicatorBuilder: (context, controller) => LoadingAnimationWidget.staggeredDotsWave(color: AppColors.primaryColor, size: 32),
-          onRefresh: () async {  },
-          child: CustomScrollView(
+      if (state is CourseInfoLoadedState) {
+        return Scaffold(
+          floatingActionButton: state.isOwner
+              ? Row(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  spacing: 12,
+                  children: [
+                    FloatingActionButton(
+                      heroTag: "one",
+                      onPressed: () => context.pushRoute(CreateLessonRoute()),
+                      child: const Icon(Iconsax.add),
+                    ),
+                    FloatingActionButton(
+                      heroTag: "two",
+                      onPressed: () => context
+                          .pushRoute(CreateCourseRoute(id: state.course.id)),
+                      child: const Icon(Iconsax.edit),
+                    ),
+                  ],
+                )
+              : const SizedBox.shrink(),
+          body: CustomMaterialIndicator(
+            useMaterialContainer: false,
+            indicatorBuilder: (context, controller) =>
+                LoadingAnimationWidget.staggeredDotsWave(
+                    color: AppColors.primaryColor, size: 32),
+            onRefresh: () async {
+              load();
+            },
+            child: CustomScrollView(
+              slivers: [
+                SliverAppBar(
+                  foregroundColor: AppColors.backgroundColor,
+                  backgroundColor: AppColors.darkBackgroundColor,
+                  stretch: true,
+                  centerTitle: true,
+                  title: state is! CourseInfoLoadedState
+                      ? Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade100,
+                          child: Container(
+                            width: 200,
+                            height: 16,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: Colors.black),
+                          ),
+                        )
+                      : Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadiusGeometry.circular(4),
+                              color: AppColors.darkBackgroundColor),
+                          child: Text(state.course.title,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleLarge
+                                  ?.copyWith(color: AppColors.backgroundColor)),
+                        ),
+                  floating: true,
+                  pinned: true,
+                  expandedHeight: 164.0,
+                  flexibleSpace: FlexibleSpaceBar(
+                    background: state is! CourseInfoLoadedState
+                        ? const SizedBox()
+                        : Image.network(
+                            "$uploadsUrl/${state.course.imageUrl}",
+                            fit: BoxFit.cover,
+                          ),
+                  ),
+                ),
+                const SliverPadding(padding: EdgeInsetsGeometry.all(12)),
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: Text(
+                      state.course.description,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+                const SliverPadding(padding: EdgeInsetsGeometry.all(12)),
+                SliverAnimatedList(
+                    initialItemCount: 20,
+                    itemBuilder: (context, i, animation) => Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0, vertical: 4),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                                color: AppColors.surfaceColor,
+                                borderRadius: BorderRadius.circular(12)),
+                            child: ListTile(
+                              leading: CircleAvatar(
+                                child: Center(
+                                    child: Text(
+                                  "$i",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyLarge
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                                )),
+                              ),
+                              title: const Text("Html & Css begin"),
+                              subtitle: const Text("Непройдено"),
+                              trailing: const Icon(Iconsax.arrow_circle_right),
+                            ),
+                          ),
+                        ))
+              ],
+            ),
+          ),
+        );
+      } else {
+        return Scaffold(
+          body: CustomScrollView(
             slivers: [
               SliverAppBar(
                 foregroundColor: AppColors.backgroundColor,
                 backgroundColor: AppColors.darkBackgroundColor,
                 stretch: true,
                 centerTitle: true,
-                title: state is! CourseInfoLoadedState
-                    ? Shimmer.fromColors(
-                        baseColor: Colors.grey.shade300,
-                        highlightColor: Colors.grey.shade100,
-                        child: Container(
-                          width: 200,
-                          height: 16,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(4),
-                              color: Colors.black),
-                        ),
-                      )
-                    : Container(
-                      padding: const EdgeInsets.all(4),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadiusGeometry.circular(4),
-                            color: AppColors.darkBackgroundColor),
-                        child: Text(state.course.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(color: AppColors.backgroundColor)),
-                      ),
+                title: Shimmer.fromColors(
+                  baseColor: Colors.grey.shade300,
+                  highlightColor: Colors.grey.shade100,
+                  child: Container(
+                    width: 200,
+                    height: 16,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: Colors.black),
+                  ),
+                ),
                 floating: true,
                 pinned: true,
                 expandedHeight: 164.0,
                 flexibleSpace: FlexibleSpaceBar(
-                  background: state is! CourseInfoLoadedState
-                      ? const SizedBox()
-                      : Image.network(
-                          "$uploadsUrl/${state.course.imageUrl}",
-                          fit: BoxFit.cover,
-                        ),
+                  background: const SizedBox(),
                 ),
               ),
               const SliverPadding(padding: EdgeInsetsGeometry.all(12)),
-              SliverAnimatedList(
-                  initialItemCount: 20,
-                  itemBuilder: (context, i, animation) => Padding(
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: 200,
+                      height: 16,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsetsGeometry.all(4)),
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 64.0),
+                  child: Shimmer.fromColors(
+                    baseColor: Colors.grey.shade300,
+                    highlightColor: Colors.grey.shade100,
+                    child: Container(
+                      width: 164,
+                      height: 16,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: Colors.black),
+                    ),
+                  ),
+                ),
+              ),
+              const SliverPadding(padding: EdgeInsetsGeometry.all(12)),
+              SliverList.builder(
+                  itemCount: 20,
+                  itemBuilder: (context, i) => Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 12.0, vertical: 4),
                         child: Container(
@@ -91,26 +227,60 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                               color: AppColors.surfaceColor,
                               borderRadius: BorderRadius.circular(12)),
                           child: ListTile(
-                            leading: CircleAvatar(
-                              child: Center(
-                                  child: Text(
-                                "$i",
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(fontWeight: FontWeight.bold),
-                              )),
+                            leading: Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                width: 52,
+                                height: 52,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.black),
+                              ),
                             ),
-                            title: const Text("Html & Css begin"),
-                            subtitle: const Text("Непройдено"),
-                            trailing: const Icon(Iconsax.arrow_circle_right),
+                            title: Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                width: 200,
+                                height: 16,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4),
+                                    color: Colors.black),
+                              ),
+                            ),
+                            subtitle: SizedBox(
+                              width: 50,
+                              child: Shimmer.fromColors(
+                                baseColor: Colors.grey.shade300,
+                                highlightColor: Colors.grey.shade100,
+                                child: Container(
+                                  width: 100,
+                                  height: 14,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4),
+                                      color: Colors.black),
+                                ),
+                              ),
+                            ),
+                            trailing: Shimmer.fromColors(
+                              baseColor: Colors.grey.shade300,
+                              highlightColor: Colors.grey.shade100,
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: Colors.black),
+                              ),
+                            ),
                           ),
                         ),
                       ))
             ],
           ),
-        ),
-      );
+        );
+      }
     });
   }
 }

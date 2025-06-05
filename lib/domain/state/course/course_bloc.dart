@@ -16,7 +16,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
   CourseBloc(this.repository) : super(CourseInitial()) {
     on<LoadCourses>(_onLoadCourses);
     on<AddCourse>(_onAddCourse);
-    on<UpdateCourse>(_onUpdateCourse);
+    // on<UpdateCourse>(_onUpdateCourse);
     on<DeleteCourse>(_onDeleteCourse);
   }
 
@@ -52,15 +52,15 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     }
   }
 
-  Future<void> _onUpdateCourse(
-      UpdateCourse event, Emitter<CourseState> emit) async {
-    try {
-      await repository.updateCourse(event.id, event.course);
-      add(LoadCourses());
-    } catch (e) {
-      emit(CourseError(e.toString()));
-    }
-  }
+  // Future<void> _onUpdateCourse(
+  //     UpdateCourse event, Emitter<CourseState> emit) async {
+  //   try {
+  //     await repository.updateCourse(event.id, event.course);
+  //     add(LoadCourses());
+  //   } catch (e) {
+  //     emit(CourseError(e.toString()));
+  //   }
+  // }
 
   Future<void> _onDeleteCourse(
       DeleteCourse event, Emitter<CourseState> emit) async {

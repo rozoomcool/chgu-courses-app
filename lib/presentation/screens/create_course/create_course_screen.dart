@@ -2,9 +2,11 @@ import 'dart:io';
 
 import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:coursera/domain/model/course/course.dart';
 import 'package:coursera/presentation/screens/create_course/bloc/create_course_bloc.dart';
 import 'package:coursera/router/app_router.dart';
 import 'package:coursera/utils/app_colors.dart';
+import 'package:coursera/utils/constants.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,7 +14,9 @@ import 'package:image_picker/image_picker.dart';
 
 @RoutePage()
 class CreateCourseScreen extends StatefulWidget {
-  const CreateCourseScreen({super.key});
+  const CreateCourseScreen({super.key, this.id});
+
+  final int? id;
 
   @override
   State<CreateCourseScreen> createState() => _CreateCourseScreenState();
@@ -41,6 +45,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
     });
   }
 
+  void updateFormFromCourse(Course course) {
+    setState(() {
+      _titleController.text = course.title;
+      _descriptionController.text = course.description;
+    });
+  }
+
   void _createCourse() {
     if (!_isFormValid) return;
 
@@ -52,6 +63,26 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
           title: _titleController.text,
           description: _descriptionController.text,
         );
+  }
+
+  void _updateCourse() {
+    if (widget.id == null) return;
+    final tempFile = _file == null ? null : File(_file!.path);
+
+    context.read<CreateCourseBloc>().updateCourse(
+          file: tempFile,
+          title: _titleController.text,
+          description: _descriptionController.text,
+          id: widget.id!,
+        );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.id != null) {
+      context.read<CreateCourseBloc>().loadCourse(widget.id!);
+    }
   }
 
   @override
@@ -83,21 +114,34 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                           width: double.infinity,
                           height: 150,
                           child: Center(
-                            child: _file == null
-                                ? const Text(
-                                    'Выберите обложку курса',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                : Container(
+                            child: Builder(builder: (context) {
+                              if (_file == null &&
+                                  state is CreateCourseLoadedState) {
+                                return Container(
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image: NetworkImage(
+                                                "$uploadsUrl/${state.course.imageUrl}"))));
+                              } else if (_file == null &&
+                                  state is! CreateCourseLoadedState) {
+                                return const Text(
+                                  'Выберите обложку курса',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              } else {
+                                return Container(
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.circular(12),
                                         image: DecorationImage(
                                             fit: BoxFit.cover,
                                             image:
-                                                FileImage(File(_file!.path)))),
-                                  ),
+                                                FileImage(File(_file!.path)))));
+                              }
+                            }),
                           ),
                         ),
                       ),
@@ -134,9 +178,15 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: _isFormValid ? _createCourse : null,
+                        onPressed:
+                            (state is CreateCourseLoadedState)
+                                ? _updateCourse
+                                : (_isFormValid &&
+                                        state is! CreateCourseLoadedState)
+                                    ? _createCourse
+                                    : null,
                         child: Text(
-                          "Создать",
+                          (state is CreateCourseLoadedState) ? "Обновить" : "Создать",
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
@@ -153,7 +203,11 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
       },
       listener: (BuildContext context, CreateCourseState state) {
         if (state is CreateCourseCreatedState) {
-          context.replaceRoute(CourseInfoRoute(id: state.course.id));
+          context.router.replace(CourseInfoRoute(id: state.course.id));
+        } else if (state is CreateCourseLoadedState) {
+          updateFormFromCourse(state.course);
+        } else if (state is CreateCourseUpdatedState) {
+          context.maybePop();
         }
       },
     );

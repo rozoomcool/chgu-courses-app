@@ -3,6 +3,7 @@ part of 'course_info_bloc.dart';
 abstract class CourseInfoState extends Equatable {}
 
 class CourseInfoInitialState extends CourseInfoState {
+
   @override
   List<Object?> get props => [];
 }
@@ -13,10 +14,10 @@ class CourseInfoLoadingState extends CourseInfoState {
 }
 
 class CourseInfoLoadedState extends CourseInfoState {
-
+  final bool isOwner;
   final Course course;
 
-  CourseInfoLoadedState({required this.course});
+  CourseInfoLoadedState({required this.course, required this.isOwner});
 
   @override
   List<Object?> get props => [];

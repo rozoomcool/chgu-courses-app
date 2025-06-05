@@ -29,6 +29,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     context.read<ProfileScreenBloc>().loadData();
+    context.router.addListener(() {
+      context.read<ProfileScreenBloc>().loadData();
+    });
   }
 
   Future<void> _animateList(int count) async {
@@ -187,7 +190,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               OutlinedButton.icon(
                                 onPressed: () => context
-                                    .pushRoute(const CreateCourseRoute()),
+                                    .pushRoute(CreateCourseRoute()),
                                 label: const Text("Добавить"),
                                 icon: const Icon(Iconsax.add),
                               )
@@ -223,26 +226,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     }
 
                                     final course = state.courses![index];
-                                    return SlideTransition(
-                                      position: Tween<Offset>(
-                                              begin: const Offset(1, 0),
-                                              end: const Offset(0, 0))
+                                    return FadeTransition(
+                                      opacity: Tween<double>(begin: 0, end: 1)
                                           .animate(CurvedAnimation(
                                               parent: anim,
                                               curve: Curves.easeIn,
                                               reverseCurve: Curves.easeInBack)),
-                                      child: CourseInfoCard(
-                                        title: course.title,
-                                        description: course.description,
-                                        imageUrl:
-                                            "$uploadsUrl/${course.imageUrl}",
-                                        rating: 4.9,
-                                        peopleCount: 136,
-                                        onTap: () async =>
-                                            await context.pushRoute(
-                                                CourseInfoRoute(id: course.id)),
-                                        onDelete: () =>
-                                            _deleteCourse(course, index),
+                                      child: ScaleTransition(
+                                        scale: Tween<double>(begin: 0.4, end: 1)
+                                            .animate(CurvedAnimation(
+                                                parent: anim,
+                                                curve: Curves.easeIn,
+                                                reverseCurve:
+                                                    Curves.easeInBack)),
+                                        child: CourseInfoCard(
+                                          title: course.title,
+                                          description: course.description,
+                                          imageUrl:
+                                              "$uploadsUrl/${course.imageUrl}",
+                                          rating: 4.9,
+                                          peopleCount: 136,
+                                          onTap: () async => await context
+                                              .pushRoute(CourseInfoRoute(
+                                                  id: course.id)),
+                                          onDelete: () =>
+                                              _deleteCourse(course, index),
+                                        ),
                                       ),
                                     );
                                   },

@@ -4,6 +4,7 @@ import 'package:coursera/presentation/screens/auth/auth_screen.dart';
 import 'package:coursera/presentation/screens/auth/register_screen.dart';
 import 'package:coursera/presentation/screens/course_info/course_info_screen.dart';
 import 'package:coursera/presentation/screens/create_course/create_course_screen.dart';
+import 'package:coursera/presentation/screens/create_lesson/create_lesson_screen.dart';
 import 'package:coursera/presentation/screens/dashboard/dashboard_screen.dart';
 import 'package:coursera/presentation/screens/home/home_screen.dart';
 import 'package:coursera/presentation/screens/profile/profile_screen.dart';
@@ -23,7 +24,7 @@ import 'package:flutter/material.dart';
 part 'app_router.gr.dart';
 
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
-class AppRouter extends _$AppRouter {
+class AppRouter extends RootStackRouter {
   final AuthState authState;
 
   AppRouter(this.authState);
@@ -44,6 +45,7 @@ class AppRouter extends _$AppRouter {
         ),
         AutoRoute(path: '/course-info', page: CourseInfoRoute.page),
         AutoRoute(path: '/create-course', page: CreateCourseRoute.page),
+        AutoRoute(path: '/create-lesson', page: CreateLessonRoute.page),
         CustomRoute(
           path: '/auth',
           page: AuthRoute.page,

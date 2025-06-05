@@ -33,7 +33,7 @@ class _MainAppState extends State<MainApp> {
                 ProfileScreenBloc(GetIt.I(), GetIt.I())..init()),
         BlocProvider(create: (context) => CreateCourseBloc(GetIt.I())),
         BlocProvider(create: (context) => CourseInfoBloc(GetIt.I(), GetIt.I())),
-        BlocProvider(create: (context) => CreateLessonBloc())
+        BlocProvider(create: (context) => CreateLessonBloc(GetIt.I()))
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {

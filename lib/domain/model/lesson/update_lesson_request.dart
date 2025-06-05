@@ -4,10 +4,11 @@ part 'update_lesson_request.g.dart';
 
 @JsonSerializable()
 class UpdateLessonRequest {
+  final int courseId;
   final String? title;
   final String? lecture;
 
-  UpdateLessonRequest({this.title, this.lecture});
+  UpdateLessonRequest({required this.courseId, this.title, this.lecture});
 
   factory UpdateLessonRequest.fromJson(Map<String, dynamic> json) =>
       _$UpdateLessonRequestFromJson(json);

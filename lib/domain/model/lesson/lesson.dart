@@ -10,8 +10,8 @@ class Lesson {
   final String title;
   final String? lecture;
   final Test? test;
-  final List<LessonAttachment> attachments;
-  final int chapterId;
+  final List<LessonAttachment>? attachments;
+  final int courseId;
 
   Lesson({
     required this.id,
@@ -19,7 +19,7 @@ class Lesson {
     this.lecture,
     this.test,
     required this.attachments,
-    required this.chapterId,
+    required this.courseId,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) => _$LessonFromJson(json);

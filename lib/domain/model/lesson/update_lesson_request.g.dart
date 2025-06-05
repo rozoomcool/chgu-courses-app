@@ -8,6 +8,7 @@ part of 'update_lesson_request.dart';
 
 UpdateLessonRequest _$UpdateLessonRequestFromJson(Map<String, dynamic> json) =>
     UpdateLessonRequest(
+      courseId: (json['courseId'] as num).toInt(),
       title: json['title'] as String?,
       lecture: json['lecture'] as String?,
     );
@@ -15,6 +16,7 @@ UpdateLessonRequest _$UpdateLessonRequestFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$UpdateLessonRequestToJson(
         UpdateLessonRequest instance) =>
     <String, dynamic>{
+      'courseId': instance.courseId,
       'title': instance.title,
       'lecture': instance.lecture,
     };

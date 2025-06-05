@@ -118,18 +118,56 @@ class CreateCourseRouteArgs {
 
 /// generated route for
 /// [CreateLessonScreen]
-class CreateLessonRoute extends PageRouteInfo<void> {
-  const CreateLessonRoute({List<PageRouteInfo>? children})
-      : super(CreateLessonRoute.name, initialChildren: children);
+class CreateLessonRoute extends PageRouteInfo<CreateLessonRouteArgs> {
+  CreateLessonRoute({
+    Key? key,
+    int? id,
+    required int courseId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CreateLessonRoute.name,
+          args: CreateLessonRouteArgs(key: key, id: id, courseId: courseId),
+          initialChildren: children,
+        );
 
   static const String name = 'CreateLessonRoute';
 
   static PageInfo page = PageInfo(
     name,
     builder: (data) {
-      return const CreateLessonScreen();
+      final args = data.argsAs<CreateLessonRouteArgs>();
+      return CreateLessonScreen(
+        key: args.key,
+        id: args.id,
+        courseId: args.courseId,
+      );
     },
   );
+}
+
+class CreateLessonRouteArgs {
+  const CreateLessonRouteArgs({this.key, this.id, required this.courseId});
+
+  final Key? key;
+
+  final int? id;
+
+  final int courseId;
+
+  @override
+  String toString() {
+    return 'CreateLessonRouteArgs{key: $key, id: $id, courseId: $courseId}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! CreateLessonRouteArgs) return false;
+    return key == other.key && id == other.id && courseId == other.courseId;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ id.hashCode ^ courseId.hashCode;
 }
 
 /// generated route for

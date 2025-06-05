@@ -6,12 +6,12 @@ part 'create_lesson_request.g.dart';
 class CreateLessonRequest {
   final String title;
   final String? lecture;
-  final int chapterId;
+  final int courseId;
 
   CreateLessonRequest({
     required this.title,
     this.lecture,
-    required this.chapterId,
+    required this.courseId,
   });
 
   factory CreateLessonRequest.fromJson(Map<String, dynamic> json) =>

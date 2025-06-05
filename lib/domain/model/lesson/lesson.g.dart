@@ -13,10 +13,10 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
       test: json['test'] == null
           ? null
           : Test.fromJson(json['test'] as Map<String, dynamic>),
-      attachments: (json['attachments'] as List<dynamic>)
-          .map((e) => LessonAttachment.fromJson(e as Map<String, dynamic>))
+      attachments: (json['attachments'] as List<dynamic>?)
+          ?.map((e) => LessonAttachment.fromJson(e as Map<String, dynamic>))
           .toList(),
-      chapterId: (json['chapterId'] as num).toInt(),
+      courseId: (json['courseId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
@@ -25,5 +25,5 @@ Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
       'lecture': instance.lecture,
       'test': instance.test,
       'attachments': instance.attachments,
-      'chapterId': instance.chapterId,
+      'courseId': instance.courseId,
     };

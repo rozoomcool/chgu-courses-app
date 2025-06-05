@@ -49,7 +49,7 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                   children: [
                     FloatingActionButton(
                       heroTag: "one",
-                      onPressed: () => context.pushRoute(CreateLessonRoute()),
+                      onPressed: () => context.pushRoute(CreateLessonRoute(courseId: state.course.id)),
                       child: const Icon(Iconsax.add),
                     ),
                     FloatingActionButton(
@@ -76,39 +76,25 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                   backgroundColor: AppColors.darkBackgroundColor,
                   stretch: true,
                   centerTitle: true,
-                  title: state is! CourseInfoLoadedState
-                      ? Shimmer.fromColors(
-                          baseColor: Colors.grey.shade300,
-                          highlightColor: Colors.grey.shade100,
-                          child: Container(
-                            width: 200,
-                            height: 16,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(4),
-                                color: Colors.black),
-                          ),
-                        )
-                      : Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadiusGeometry.circular(4),
-                              color: AppColors.darkBackgroundColor),
-                          child: Text(state.course.title,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .titleLarge
-                                  ?.copyWith(color: AppColors.backgroundColor)),
-                        ),
+                  title: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadiusGeometry.circular(4),
+                        color: AppColors.darkBackgroundColor),
+                    child: Text(state.course.title,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleLarge
+                            ?.copyWith(color: AppColors.backgroundColor)),
+                  ),
                   floating: true,
                   pinned: true,
                   expandedHeight: 164.0,
                   flexibleSpace: FlexibleSpaceBar(
-                    background: state is! CourseInfoLoadedState
-                        ? const SizedBox()
-                        : Image.network(
-                            "$uploadsUrl/${state.course.imageUrl}",
-                            fit: BoxFit.cover,
-                          ),
+                    background: Image.network(
+                      "$uploadsUrl/${state.course.imageUrl}",
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
                 const SliverPadding(padding: EdgeInsetsGeometry.all(12)),

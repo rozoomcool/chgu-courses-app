@@ -10,7 +10,7 @@ CreateLessonRequest _$CreateLessonRequestFromJson(Map<String, dynamic> json) =>
     CreateLessonRequest(
       title: json['title'] as String,
       lecture: json['lecture'] as String?,
-      chapterId: (json['chapterId'] as num).toInt(),
+      courseId: (json['courseId'] as num).toInt(),
     );
 
 Map<String, dynamic> _$CreateLessonRequestToJson(
@@ -18,5 +18,5 @@ Map<String, dynamic> _$CreateLessonRequestToJson(
     <String, dynamic>{
       'title': instance.title,
       'lecture': instance.lecture,
-      'chapterId': instance.chapterId,
+      'courseId': instance.courseId,
     };

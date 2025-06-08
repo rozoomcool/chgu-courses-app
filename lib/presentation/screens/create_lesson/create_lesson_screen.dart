@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:coursera/presentation/screens/create_lesson/bloc/create_lesson_bloc.dart';
 import 'package:coursera/utils/app_colors.dart';
@@ -20,6 +22,24 @@ class CreateLessonScreen extends StatefulWidget {
 class _CreateLessonScreenState extends State<CreateLessonScreen> {
   final QuillController _controller = QuillController.basic();
   final TextEditingController _titleController = TextEditingController();
+  final FocusNode _titleFocusNode = FocusNode();
+  final FocusNode _editorFocusNode = FocusNode();
+
+  String title = "";
+  String lecture = "";
+  bool _isInitialized = false;
+
+  final GlobalKey<FormState> _titleKey = GlobalKey();
+  final GlobalKey<FormState> _lectureKey = GlobalKey();
+
+  void updateTexts(String? t, String? d) {
+    if (!mounted) return;
+    
+    setState(() {
+      if (t != null) title = t;
+      if (d != null) lecture = d;
+    });
+  }
 
   void loadCourse() {
     context.read<CreateLessonBloc>().loadLesson(widget.id);
@@ -46,25 +66,52 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
   void initState() {
     super.initState();
     loadCourse();
+    
+    _titleController.addListener(() {
+      if (_isInitialized) {
+        updateTexts(_titleController.text, null);
+      }
+    });
+
+    _controller.document.changes.listen((event) {
+      if (_isInitialized) {
+        updateTexts(null, _controller.document.toString());
+      }
+    });
+
+    _titleFocusNode.addListener(() {
+      if (!_titleFocusNode.hasFocus) {
+        _editorFocusNode.requestFocus();
+      }
+    });
+
+    _editorFocusNode.addListener(() {
+      if (!_editorFocusNode.hasFocus) {
+        _titleFocusNode.requestFocus();
+      }
+    });
+
     context.router.addListener(() {
       loadCourse();
     });
-    _controller.addListener(() => setState(() {}));
-    _titleController.addListener(() => setState(() {}));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _titleController.dispose();
+    _titleFocusNode.dispose();
+    _editorFocusNode.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<CreateLessonBloc, CreateLessonState>(
       builder: (context, state) {
-        debugPrint("||| $state");
         return Stack(
           alignment: Alignment.center,
           children: [
-            if (state is CreateLessonLoadingState ||
-                state is CreateLessonInitialState)
-              LoadingAnimationWidget.staggeredDotsWave(
-                  color: AppColors.primaryColor, size: 32),
             Scaffold(
               appBar: AppBar(
                 actions: [
@@ -142,14 +189,12 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                     ),
                     if (state is CreateLessonLoadedState)
                       IconButton.outlined(
-                        onPressed: (state.lesson?.title !=
-                                    _titleController.value.text &&
-                                state.lesson?.lecture !=
-                                    _controller.getPlainText())
+                        onPressed: (state.lesson?.title != title ||
+                                state.lesson?.lecture != lecture)
                             ? () {
                                 save(
-                                    title: _titleController.value.text,
-                                    lecture: _controller.getPlainText());
+                                    title: _titleController.text,
+                                    lecture: _controller.document.toString());
                               }
                             : null,
                         icon: Icon(
@@ -275,22 +320,21 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                         ],
                       ),
                     ),
-                    // QuillSimpleToolbar(
-                    //   controller: _controller,
-                    //   config: const QuillSimpleToolbarConfig(
-                    //       showSearchButton: false, showDirection: true),
-                    // ),
                     Padding(
                         padding: EdgeInsetsGeometry.all(8),
                         child: TextField(
+                          key: _titleKey,
+                          focusNode: _titleFocusNode,
                           autofocus: false,
                           controller: _titleController,
                           decoration: InputDecoration(hint: Text("Название")),
                         )),
                     Expanded(
                       child: QuillEditor.basic(
+                        key: _lectureKey,
                         controller: _controller,
-                        config: const QuillEditorConfig(
+                        focusNode: _editorFocusNode,
+                        config: QuillEditorConfig(
                             expands: true,
                             autoFocus: false,
                             padding: EdgeInsetsGeometry.only(
@@ -301,10 +345,34 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                 ),
               ),
             ),
+            if (state is CreateLessonLoadingState ||
+                state is CreateLessonInitialState)
+              Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Colors.black12,
+                child: Center(
+                  child: LoadingAnimationWidget.staggeredDotsWave(
+                      color: AppColors.primaryColor, size: 32),
+                ),
+              ),
           ],
         );
       },
-      listener: (BuildContext context, CreateLessonState state) {},
+      listener: (BuildContext context, CreateLessonState state) {
+        if (state is CreateLessonLoadedState) {
+          if (!_isInitialized) {
+            _isInitialized = true;
+            _titleController.text = state.lesson?.title ?? '';
+            final lecture = state.lesson?.lecture;
+            if (lecture != null && lecture.isNotEmpty) {
+              _controller.document = Document.fromJson(
+                  jsonDecode(lecture) as List<dynamic>);
+            }
+          }
+          updateTexts(state.lesson?.title, state.lesson?.lecture);
+        }
+      },
     );
   }
 }

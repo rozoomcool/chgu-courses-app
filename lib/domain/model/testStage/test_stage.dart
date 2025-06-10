@@ -9,19 +9,15 @@ class TestStage {
   final int id;
   final int testId;
   final TestStageType type;
-  final int answerId;
   final List<Option> options;
   final String question;
-  final Option answer;
 
   TestStage({
     required this.id,
     required this.testId,
     required this.type,
-    required this.answerId,
     required this.options,
     required this.question,
-    required this.answer,
   });
 
   factory TestStage.fromJson(Map<String, dynamic> json) => _$TestStageFromJson(json);

@@ -4,6 +4,8 @@ import 'package:coursera/domain/state/theme/theme_cubit.dart';
 import 'package:coursera/presentation/screens/course_info/bloc/course_info_bloc.dart';
 import 'package:coursera/presentation/screens/create_course/bloc/create_course_bloc.dart';
 import 'package:coursera/presentation/screens/create_lesson/bloc/create_lesson_bloc.dart';
+import 'package:coursera/presentation/screens/create_lesson/bottom_sheet/bloc/test_edit_bloc.dart';
+import 'package:coursera/presentation/screens/lesson_info/bloc/lesson_info_bloc.dart';
 import 'package:coursera/presentation/screens/profile/bloc/profile_screen_bloc.dart';
 import 'package:coursera/router/app_router.dart';
 import 'package:coursera/utils/theme.dart';
@@ -33,7 +35,9 @@ class _MainAppState extends State<MainApp> {
                 ProfileScreenBloc(GetIt.I(), GetIt.I())..init()),
         BlocProvider(create: (context) => CreateCourseBloc(GetIt.I())),
         BlocProvider(create: (context) => CourseInfoBloc(GetIt.I(), GetIt.I())),
-        BlocProvider(create: (context) => CreateLessonBloc(GetIt.I()))
+        BlocProvider(create: (context) => CreateLessonBloc(GetIt.I())),
+        BlocProvider(create: (context) => LessonInfoBloc(GetIt.I(), GetIt.I())),
+        BlocProvider(create: (context) => TestEditBloc(GetIt.I())),
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {

@@ -78,6 +78,13 @@ class _CreateCourseScreenState extends State<CreateCourseScreen> {
   }
 
   @override
+  void dispose() {
+    _titleController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
     if (widget.id != null) {

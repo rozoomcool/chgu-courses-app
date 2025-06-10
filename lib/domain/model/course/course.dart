@@ -12,6 +12,8 @@ class Course {
   final String? imageUrl;
   final List<Lesson>? lessons;
   final Complexity complexity;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   Course({
     required this.id,
@@ -21,6 +23,8 @@ class Course {
     this.imageUrl,
     required this.lessons,
     required this.complexity,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

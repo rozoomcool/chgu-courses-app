@@ -17,9 +17,10 @@ class CreateLessonSaveChangeEvent extends CreateLessonEvent {
 
 class CreateLessonLoadEvent extends CreateLessonEvent {
   final int? id;
+  final int courseId;
 
   CreateLessonLoadEvent(
-      {required this.id});
+      {required this.id, required this.courseId});
 
   @override
   List<Object?> get props => [id];

@@ -26,13 +26,19 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
     context.read<CourseInfoBloc>().loadCourse(widget.id);
   }
 
+  void onNavHistUpdate () => load();
+
   @override
   void initState() {
     super.initState();
     load();
-    context.router.addListener(() {
-      load();
-    });
+    context.router.navigationHistory.addListener(onNavHistUpdate);
+  }
+
+  @override
+  void dispose() {
+    context.router.navigationHistory.removeListener(() {});
+    super.dispose();
   }
 
   @override
@@ -49,7 +55,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                   children: [
                     FloatingActionButton(
                       heroTag: "one",
-                      onPressed: () => context.pushRoute(CreateLessonRoute(courseId: state.course.id)),
+                      onPressed: () => context.pushRoute(
+                          CreateLessonRoute(courseId: state.course.id)),
                       child: const Icon(Iconsax.add),
                     ),
                     FloatingActionButton(
@@ -109,33 +116,51 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                   ),
                 ),
                 const SliverPadding(padding: EdgeInsetsGeometry.all(12)),
-                SliverAnimatedList(
-                    initialItemCount: 20,
-                    itemBuilder: (context, i, animation) => Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 4),
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                                color: AppColors.surfaceColor,
-                                borderRadius: BorderRadius.circular(12)),
-                            child: ListTile(
-                              leading: CircleAvatar(
-                                child: Center(
-                                    child: Text(
-                                  "$i",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyLarge
-                                      ?.copyWith(fontWeight: FontWeight.bold),
-                                )),
+                if (state.course.lessons != null &&
+                    state.course.lessons!.isNotEmpty)
+                  SliverAnimatedList(
+                      initialItemCount: state.course.lessons!.length,
+                      itemBuilder: (context, i, animation) => Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 4),
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () => context.pushRoute(LessonInfoRoute(
+                                  id: state.course.lessons![i].id)),
+                              child: Container(
+                                padding: const EdgeInsets.all(4),
+                                decoration: BoxDecoration(
+                                    color: AppColors.surfaceColor,
+                                    borderRadius: BorderRadius.circular(12)),
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                    child: Center(
+                                        child: Text(
+                                      "${i + 1}",
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyLarge
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                    )),
+                                  ),
+                                  title: Text(state.course.lessons![i].title),
+                                  subtitle: const Text("Непройдено"),
+                                  trailing: IconButton(
+                                    icon: Icon(Iconsax.edit),
+                                    onPressed: () {
+                                      context.pushRoute(CreateLessonRoute(
+                                          id: state.course.lessons![i].id,
+                                          courseId: widget.id));
+                                    },
+                                  ),
+                                ),
                               ),
-                              title: const Text("Html & Css begin"),
-                              subtitle: const Text("Непройдено"),
-                              trailing: const Icon(Iconsax.arrow_circle_right),
                             ),
-                          ),
-                        ))
+                          )),
+                const SliverPadding(padding: EdgeInsetsGeometry.all(56)),
               ],
             ),
           ),

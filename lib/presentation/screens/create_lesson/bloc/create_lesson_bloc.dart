@@ -20,8 +20,8 @@ class CreateLessonBloc extends Bloc<CreateLessonEvent, CreateLessonState> {
     // on<DeleteCourse>(_onDeleteCourse);
   }
 
-  void loadLesson(int? id) {
-    add(CreateLessonLoadEvent(id: id));
+  void loadLesson({int? id, required int courseId}) {
+    add(CreateLessonLoadEvent(id: id, courseId: courseId));
   }
 
   void update(
@@ -38,7 +38,11 @@ class CreateLessonBloc extends Bloc<CreateLessonEvent, CreateLessonState> {
     emit(CreateLessonLoadingState());
     try {
       if (event.id == null) {
-        emit(CreateLessonLoadedState(lesson: null));
+        final lesson = await repository.create(CreateLessonRequest(
+            title: "",
+            courseId: event.courseId,
+            lecture: ""));
+        emit(CreateLessonLoadedState(lesson: lesson));
         return;
       }
       final lesson = await repository.getOne(event.id!);

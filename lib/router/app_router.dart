@@ -7,6 +7,7 @@ import 'package:coursera/presentation/screens/create_course/create_course_screen
 import 'package:coursera/presentation/screens/create_lesson/create_lesson_screen.dart';
 import 'package:coursera/presentation/screens/dashboard/dashboard_screen.dart';
 import 'package:coursera/presentation/screens/home/home_screen.dart';
+import 'package:coursera/presentation/screens/lesson_info/lesson_info_screen.dart';
 import 'package:coursera/presentation/screens/profile/profile_screen.dart';
 import 'package:coursera/presentation/screens/root/root_screen.dart';
 import 'package:coursera/presentation/screens/service/service_screen.dart';
@@ -44,6 +45,8 @@ class AppRouter extends RootStackRouter {
           ],
         ),
         AutoRoute(path: '/course-info', page: CourseInfoRoute.page),
+        // AutoRoute(path: '/test', page: CourseInfoRoute.page),
+        AutoRoute(path: '/lesson-info', page: LessonInfoRoute.page),
         AutoRoute(path: '/create-course', page: CreateCourseRoute.page),
         AutoRoute(path: '/create-lesson', page: CreateLessonRoute.page),
         CustomRoute(

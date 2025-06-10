@@ -29,9 +29,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     super.initState();
     context.read<ProfileScreenBloc>().loadData();
-    context.router.addListener(() {
+    context.router.navigationHistory.addListener(() {
       context.read<ProfileScreenBloc>().loadData();
     });
+  }
+
+  @override
+  void dispose() {
+    _indicatorController.dispose();
+    context.router.navigationHistory.removeListener(() {});
+    super.dispose();
   }
 
   Future<void> _animateList(int count) async {

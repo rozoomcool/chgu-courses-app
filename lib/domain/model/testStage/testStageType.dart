@@ -1,4 +1,4 @@
 enum TestStageType {
   OPTIONAL,
-  REQUIRED,
+  MANUAL,
 }

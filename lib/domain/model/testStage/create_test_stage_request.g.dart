@@ -1,26 +1,24 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'test_stage.dart';
+part of 'create_test_stage_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-TestStage _$TestStageFromJson(Map<String, dynamic> json) => TestStage(
-      id: (json['id'] as num).toInt(),
+CreateTestStageRequest _$CreateTestStageRequestFromJson(
+        Map<String, dynamic> json) =>
+    CreateTestStageRequest(
       testId: (json['testId'] as num).toInt(),
       type: $enumDecode(_$TestStageTypeEnumMap, json['type']),
-      options: (json['options'] as List<dynamic>)
-          .map((e) => Option.fromJson(e as Map<String, dynamic>))
-          .toList(),
       question: json['question'] as String,
     );
 
-Map<String, dynamic> _$TestStageToJson(TestStage instance) => <String, dynamic>{
-      'id': instance.id,
+Map<String, dynamic> _$CreateTestStageRequestToJson(
+        CreateTestStageRequest instance) =>
+    <String, dynamic>{
       'testId': instance.testId,
       'type': _$TestStageTypeEnumMap[instance.type]!,
-      'options': instance.options,
       'question': instance.question,
     };
 

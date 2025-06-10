@@ -40,6 +40,7 @@ class ProfileScreenBloc extends Bloc<ProfileScreenEvent, ProfileScreenState> {
       // await Future.delayed(Duration(milliseconds: 500));
       final user = await userApiRepo.findOne();
       final courses = await courseApiRepo.getByTeacherId(user.id);
+      courses.sort((a, b) => a.updatedAt.compareTo(b.updatedAt),);
       // debugPrint(request.toString());
       emit(ProfileScreenLoadedState(
           user: user, profile: user.profile!, courses: courses));

@@ -2,6 +2,7 @@ import 'package:coursera/app/app.dart';
 import 'package:coursera/domain/api/api.dart';
 import 'package:coursera/domain/api/course/course_api_client.dart';
 import 'package:coursera/domain/api/lesson/lesson_api_client.dart';
+import 'package:coursera/domain/api/test/test_api_client.dart';
 import 'package:coursera/domain/api/user/user_api_client.dart';
 import 'package:coursera/repository/shared/auth_shared_repository.dart';
 import 'package:coursera/utils/custom_scaffold_util.dart';
@@ -23,6 +24,7 @@ void main() async {
   GetIt.I.registerFactory(() => CourseApiClient(GetIt.I<Dio>()));
   GetIt.I.registerFactory(() => UserApiClient(GetIt.I<Dio>()));
   GetIt.I.registerFactory(() => LessonApiClient(GetIt.I<Dio>()));
+  GetIt.I.registerFactory(() => TestApiClient(GetIt.I<Dio>()));
 
   runApp(const MainApp());
 }

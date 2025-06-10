@@ -203,6 +203,50 @@ class HomeRoute extends PageRouteInfo<void> {
 }
 
 /// generated route for
+/// [LessonInfoScreen]
+class LessonInfoRoute extends PageRouteInfo<LessonInfoRouteArgs> {
+  LessonInfoRoute({Key? key, required int id, List<PageRouteInfo>? children})
+      : super(
+          LessonInfoRoute.name,
+          args: LessonInfoRouteArgs(key: key, id: id),
+          initialChildren: children,
+        );
+
+  static const String name = 'LessonInfoRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<LessonInfoRouteArgs>();
+      return LessonInfoScreen(key: args.key, id: args.id);
+    },
+  );
+}
+
+class LessonInfoRouteArgs {
+  const LessonInfoRouteArgs({this.key, required this.id});
+
+  final Key? key;
+
+  final int id;
+
+  @override
+  String toString() {
+    return 'LessonInfoRouteArgs{key: $key, id: $id}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! LessonInfoRouteArgs) return false;
+    return key == other.key && id == other.id;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ id.hashCode;
+}
+
+/// generated route for
 /// [ProfileScreen]
 class ProfileRoute extends PageRouteInfo<void> {
   const ProfileRoute({List<PageRouteInfo>? children})

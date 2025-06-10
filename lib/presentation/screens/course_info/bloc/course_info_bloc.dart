@@ -26,7 +26,7 @@ class CourseInfoBloc extends Bloc<CourseInfoEvent, CourseInfoState> {
     emit(CourseInfoLoadingState());
     try {
       final course = await courseApiRepo.getCourse(event.id,
-          teacher: false, students: false, lessons: false);
+          teacher: true, students: false, lessons: true);
 
       if (course.teacherId == authSharedRepository.getId()) {
         emit(CourseInfoLoadedState(course: course, isOwner: true));

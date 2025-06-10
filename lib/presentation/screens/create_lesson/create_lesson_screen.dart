@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:coursera/presentation/screens/create_lesson/bloc/create_lesson_bloc.dart';
+import 'package:coursera/presentation/screens/create_lesson/bottom_sheet/test_edit_bottom_sheet.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -26,31 +27,42 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
   final FocusNode _editorFocusNode = FocusNode();
 
   String title = "";
-  String lecture = "";
+  bool _needUpdateLecture = false;
   bool _isInitialized = false;
 
   final GlobalKey<FormState> _titleKey = GlobalKey();
   final GlobalKey<FormState> _lectureKey = GlobalKey();
 
-  void updateTexts(String? t, String? d) {
-    if (!mounted) return;
-    
+  void updateTitle() {
     setState(() {
-      if (t != null) title = t;
-      if (d != null) lecture = d;
+      title = _titleController.text;
     });
   }
 
-  void loadCourse() {
-    context.read<CreateLessonBloc>().loadLesson(widget.id);
+  // void updateLecture() {
+  //   setState(() {
+  //     lecture = _titleController.text;
+  //   });
+  // }
+
+  void setNeedUpdateLecture(bool v) {
+    setState(() {
+      _needUpdateLecture = v;
+    });
   }
 
-  void save({required String title, required String lecture}) {
+  void loadLesson() {
+    context
+        .read<CreateLessonBloc>()
+        .loadLesson(id: widget.id, courseId: widget.courseId);
+  }
+
+  void save() {
     context.read<CreateLessonBloc>().update(
         courseId: widget.courseId,
         lessonId: widget.id,
-        title: title,
-        lecture: lecture);
+        title: _titleController.text,
+        lecture: jsonEncode(_controller.document.toDelta().toJson()));
   }
 
   @override
@@ -58,24 +70,36 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
     super.didUpdateWidget(oldWidget);
 
     if (widget.id != oldWidget.id) {
-      loadCourse();
+      loadLesson();
     }
+  }
+
+  Future<void> onTestTap(int lessonId, int? testId) async {
+    await showModalBottomSheet(
+        constraints: BoxConstraints(
+            maxHeight: 500,
+            minWidth: double.infinity),
+        showDragHandle: true,
+        context: context,
+        builder: (context) {
+          return TestEditBottomSheet(id: testId, lessonId: lessonId);
+        });
   }
 
   @override
   void initState() {
     super.initState();
-    loadCourse();
-    
+    loadLesson();
+
     _titleController.addListener(() {
       if (_isInitialized) {
-        updateTexts(_titleController.text, null);
+        updateTitle();
       }
     });
 
-    _controller.document.changes.listen((event) {
+    _controller.addListener(() {
       if (_isInitialized) {
-        updateTexts(null, _controller.document.toString());
+        setNeedUpdateLecture(true);
       }
     });
 
@@ -91,13 +115,14 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
       }
     });
 
-    context.router.addListener(() {
-      loadCourse();
+    context.router.navigationHistory.addListener(() {
+      loadLesson();
     });
   }
 
   @override
   void dispose() {
+    context.router.navigationHistory.removeListener(() {});
     _controller.dispose();
     _titleController.dispose();
     _titleFocusNode.dispose();
@@ -145,8 +170,13 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                   ),
                   FloatingActionButton(
                     heroTag: "add_test",
-                    onPressed: () {},
-                    child: Icon(Iconsax.teacher),
+                    onPressed: state is CreateLessonLoadedState
+                        ? state.lesson == null
+                            ? null
+                            : () => onTestTap(
+                                state.lesson!.id, state.lesson?.test?.id)
+                        : null,
+                    child: Icon(Iconsax.receipt_item),
                   ),
                 ],
               ),
@@ -189,14 +219,12 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
                     ),
                     if (state is CreateLessonLoadedState)
                       IconButton.outlined(
-                        onPressed: (state.lesson?.title != title ||
-                                state.lesson?.lecture != lecture)
-                            ? () {
-                                save(
-                                    title: _titleController.text,
-                                    lecture: _controller.document.toString());
-                              }
-                            : null,
+                        onPressed:
+                            (state.lesson?.title != title || _needUpdateLecture)
+                                ? () {
+                                    save();
+                                  }
+                                : null,
                         icon: Icon(
                           Iconsax.external_drive,
                           size: 32,
@@ -365,12 +393,16 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
             _isInitialized = true;
             _titleController.text = state.lesson?.title ?? '';
             final lecture = state.lesson?.lecture;
+            _controller.document.toDelta();
             if (lecture != null && lecture.isNotEmpty) {
-              _controller.document = Document.fromJson(
-                  jsonDecode(lecture) as List<dynamic>);
+              _controller.document =
+                  Document.fromJson(jsonDecode(lecture) as List<dynamic>);
             }
           }
-          updateTexts(state.lesson?.title, state.lesson?.lecture);
+          setNeedUpdateLecture(false);
+          updateTitle();
+        } else if (state is CreateLessonErrorState) {
+          loadLesson();
         }
       },
     );

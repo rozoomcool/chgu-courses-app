@@ -16,6 +16,8 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
           ?.map((e) => Lesson.fromJson(e as Map<String, dynamic>))
           .toList(),
       complexity: $enumDecode(_$ComplexityEnumMap, json['complexity']),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
@@ -26,6 +28,8 @@ Map<String, dynamic> _$CourseToJson(Course instance) => <String, dynamic>{
       'imageUrl': instance.imageUrl,
       'lessons': instance.lessons,
       'complexity': _$ComplexityEnumMap[instance.complexity]!,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };
 
 const _$ComplexityEnumMap = {

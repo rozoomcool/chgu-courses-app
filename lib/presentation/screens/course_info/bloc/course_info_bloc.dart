@@ -15,10 +15,15 @@ class CourseInfoBloc extends Bloc<CourseInfoEvent, CourseInfoState> {
   CourseInfoBloc(this.courseApiRepo, this.authSharedRepository)
       : super(CourseInfoInitialState()) {
     on<CourseInfoLoadEvent>(_onCourseInfoLoad);
+    on<CourseInfoDeleteLessonEvent>(_onCourseInfoDeleteLesson);
   }
 
   void loadCourse(int id) {
     add(CourseInfoLoadEvent(id: id));
+  }
+
+  void deleteLesson({required int courseId, required int lessonId}) {
+    add(CourseInfoDeleteLessonEvent(courseId: courseId, lessonId: lessonId));
   }
 
   Future<void> _onCourseInfoLoad(
@@ -33,6 +38,20 @@ class CourseInfoBloc extends Bloc<CourseInfoEvent, CourseInfoState> {
       } else {
         emit(CourseInfoLoadedState(course: course, isOwner: false));
       }
+    } catch (e) {
+      debugPrint(e.toString());
+      debugPrint("||| error |||");
+      emit(CourseInfoErrorState(e.toString()));
+    }
+  }
+
+  Future<void> _onCourseInfoDeleteLesson(
+      CourseInfoDeleteLessonEvent event, Emitter<CourseInfoState> emit) async {
+    emit(CourseInfoLoadingState());
+    try {
+      await courseApiRepo.deleteLesson(
+          courseId: event.courseId, lessonId: event.lessonId);
+      loadCourse(event.courseId);
     } catch (e) {
       debugPrint(e.toString());
       debugPrint("||| error |||");

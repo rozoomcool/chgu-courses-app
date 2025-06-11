@@ -76,8 +76,10 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
 
   Future<void> onTestTap(int lessonId, int? testId) async {
     await showModalBottomSheet(
+      useRootNavigator: true,
+      isScrollControlled: true,
+      useSafeArea: true,
         constraints: BoxConstraints(
-            maxHeight: 500,
             minWidth: double.infinity),
         showDragHandle: true,
         context: context,
@@ -122,7 +124,9 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
 
   @override
   void dispose() {
-    context.router.navigationHistory.removeListener(() {});
+    if(mounted) {
+      context.router.navigationHistory.removeListener(() {});
+    }
     _controller.dispose();
     _titleController.dispose();
     _titleFocusNode.dispose();

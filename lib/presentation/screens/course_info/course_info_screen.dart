@@ -26,18 +26,59 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
     context.read<CourseInfoBloc>().loadCourse(widget.id);
   }
 
-  void onNavHistUpdate () => load();
+  void onNavHistUpdate() => load();
+
+  void onLongPressCard(int lessonId) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+              child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Iconsax.trash,
+                  size: 64,
+                  color: Colors.redAccent.shade400,
+                ),
+                SizedBox(
+                  height: 12,
+                ),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade700),
+                    onPressed: () {
+                      context.read<CourseInfoBloc>().deleteLesson(
+                          courseId: widget.id, lessonId: lessonId);
+                      context.pop();
+                    },
+                    child: Text(
+                      "Удалить урок?",
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyLarge
+                          ?.copyWith(color: AppColors.backgroundColor),
+                    ))
+              ],
+            ),
+          ));
+        });
+  }
 
   @override
   void initState() {
     super.initState();
     load();
-    context.router.navigationHistory.addListener(onNavHistUpdate);
+    context.router.addListener(onNavHistUpdate);
   }
 
   @override
   void dispose() {
-    context.router.navigationHistory.removeListener(() {});
+    if (mounted) {
+      context.router.removeListener(() {});
+    }
     super.dispose();
   }
 
@@ -127,6 +168,8 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                               borderRadius: BorderRadius.circular(12),
                               onTap: () => context.pushRoute(LessonInfoRoute(
                                   id: state.course.lessons![i].id)),
+                              onLongPress: () =>
+                                  onLongPressCard(state.course.lessons![i].id),
                               child: Container(
                                 padding: const EdgeInsets.all(4),
                                 decoration: BoxDecoration(

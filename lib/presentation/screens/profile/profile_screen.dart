@@ -35,9 +35,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    context.read<ProfileScreenBloc>().loadData();
+  }
+
+  @override
   void dispose() {
     _indicatorController.dispose();
-    context.router.navigationHistory.removeListener(() {});
+    if (mounted) {
+      context.router.navigationHistory.removeListener(() {});
+    }
     super.dispose();
   }
 
@@ -196,8 +204,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 textAlign: TextAlign.start,
                               ),
                               OutlinedButton.icon(
-                                onPressed: () => context
-                                    .pushRoute(CreateCourseRoute()),
+                                onPressed: () =>
+                                    context.pushRoute(CreateCourseRoute()),
                                 label: const Text("Добавить"),
                                 icon: const Icon(Iconsax.add),
                               )

@@ -7,6 +7,7 @@ part 'test.g.dart';
 class Test {
   final int id;
   final int? lessonId;
+  final int ownerId;
   final List<TestStage> testStages;
   final DateTime createdAt;
   final DateTime updatedAt;
@@ -15,6 +16,7 @@ class Test {
     required this.id,
     this.lessonId,
     required this.testStages,
+    required this.ownerId,
     required this.createdAt,
     required this.updatedAt
   });

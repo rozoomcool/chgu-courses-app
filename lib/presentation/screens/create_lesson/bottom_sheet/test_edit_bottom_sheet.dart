@@ -1,8 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:coursera/domain/model/option/create_option_request.dart';
 import 'package:coursera/domain/model/testStage/create_test_stage_request.dart';
 import 'package:coursera/domain/model/testStage/testStageType.dart';
 import 'package:coursera/presentation/screens/create_lesson/bottom_sheet/bloc/test_edit_bloc.dart';
+import 'package:coursera/presentation/screens/create_lesson/dialog/create_option_dialog.dart';
 import 'package:coursera/presentation/screens/create_lesson/dialog/create_test_stage_dialog.dart';
+import 'package:coursera/presentation/screens/create_lesson/widgets/create_test_stage_card.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,8 +23,10 @@ class TestEditBottomSheet extends StatefulWidget {
 }
 
 class _TestEditBottomSheetState extends State<TestEditBottomSheet> {
+  late final VoidCallback _routerListener;
+
   Future<void> addTestStage(int testId) async {
-    showDialog(
+    await showDialog(
         context: context,
         builder: (context) {
           return CreateTestStageDialog(
@@ -34,72 +39,99 @@ class _TestEditBottomSheetState extends State<TestEditBottomSheet> {
         });
   }
 
+  Future<void> addOption(int testId, int testStageId) async {
+    await showDialog(
+        context: context,
+        builder: (context) {
+          return CreateOptionDialog(onCreate: (String option, bool isCorrect) {
+            context.read<TestEditBloc>().addOption(
+                testId,
+                CreateOptionRequest(
+                    option: option,
+                    testStageId: testStageId,
+                    isCorrect: isCorrect));
+          });
+        });
+  }
+
   void loadTest() {
+    if (!mounted) return;
     context.read<TestEditBloc>().loadTest(widget.id, widget.lessonId);
   }
 
   @override
   void initState() {
     super.initState();
-    context.router.navigationHistory.addListener(() => loadTest());
+    _routerListener = () => loadTest();
+    context.router.navigationHistory.addListener(_routerListener);
     loadTest();
   }
 
   @override
   void dispose() {
-    context.router.navigationHistory.removeListener(() {});
+    if (mounted) {
+      context.router.navigationHistory.removeListener(_routerListener);
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BottomSheet(
-      builder: (context) => SafeArea(
-        child: BlocConsumer<TestEditBloc, TestEditState>(
-          builder: (context, state) {
-            if (state is TestEditLoadedState) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 8.0),
-                    child: TextButton.icon(
-                      onPressed: () => addTestStage(state.test.id),
-                      label: const Text("Добавить вопрос"),
-                      icon: const Icon(Iconsax.add),
-                    ),
+    return SafeArea(
+      child: BlocConsumer<TestEditBloc, TestEditState>(
+        builder: (context, state) {
+          if (state is TestEditLoadedState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
+                  child: TextButton.icon(
+                    onPressed: () => addTestStage(state.test.id),
+                    label: const Text("Добавить вопрос"),
+                    icon: const Icon(Iconsax.add),
                   ),
-                  Flexible(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      physics: const ClampingScrollPhysics(),
-                      itemCount: state.test.testStages.length,
-                      padding: EdgeInsets.all(8),
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          title: Text(state.test.testStages[index].question),
-                        );
-                      },
-                    ),
+                ),
+                Flexible(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                    itemCount: state.test.testStages.length,
+                    padding: EdgeInsets.all(8),
+                    itemBuilder: (context, index) {
+                      return CreateTestStageCard(
+                        testStage: state.test.testStages[index],
+                        onEdit: () {},
+                        onDelete: () => context
+                            .read<TestEditBloc>()
+                            .deleteTestStage(state.test.testStages[index].id),
+                        onAddOption: () => addOption(
+                            state.test.id, state.test.testStages[index].id),
+                        onDeleteOption: (int id) {
+                          context.read<TestEditBloc>().deleteOption(
+                              testStageId: state.test.testStages[index].id,
+                              optionId: id);
+                        },
+                      );
+                    },
                   ),
-                ],
-              );
-            } else {
-              return Center(
-                child: LoadingAnimationWidget.staggeredDotsWave(
-                    color: AppColors.primaryColor, size: 32),
-              );
-            }
-          },
-          listener: (BuildContext context, TestEditState state) {
-            if (state is TestEditErrorState) {
-              loadTest();
-            }
-          },
-        ),
+                ),
+              ],
+            );
+          } else {
+            return Center(
+              child: LoadingAnimationWidget.staggeredDotsWave(
+                  color: AppColors.primaryColor, size: 32),
+            );
+          }
+        },
+        listener: (BuildContext context, TestEditState state) {
+          if (state is TestEditErrorState) {
+            loadTest();
+          }
+        },
       ),
-      onClosing: () {},
     );
   }
 }

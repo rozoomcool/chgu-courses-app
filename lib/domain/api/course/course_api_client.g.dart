@@ -50,6 +50,28 @@ class _CourseApiClient implements CourseApiClient {
   }
 
   @override
+  Future<void> deleteLesson({
+    required int courseId,
+    required int lessonId,
+  }) async {
+    final _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    const Map<String, dynamic>? _data = null;
+    final _options = _setStreamType<void>(
+      Options(method: 'DELETE', headers: _headers, extra: _extra)
+          .compose(
+            _dio.options,
+            '/course/${courseId}/lesson/${lessonId}',
+            queryParameters: queryParameters,
+            data: _data,
+          )
+          .copyWith(baseUrl: _combineBaseUrls(_dio.options.baseUrl, baseUrl)),
+    );
+    await _dio.fetch<void>(_options);
+  }
+
+  @override
   Future<List<Course>> getAllCoursesDeep({int? skip, int? take}) async {
     final _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'skip': skip, r'take': take};

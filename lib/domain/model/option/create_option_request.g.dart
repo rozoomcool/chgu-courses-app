@@ -1,20 +1,21 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'option.dart';
+part of 'create_option_request.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-Option _$OptionFromJson(Map<String, dynamic> json) => Option(
-      id: (json['id'] as num).toInt(),
+CreateOptionRequest _$CreateOptionRequestFromJson(Map<String, dynamic> json) =>
+    CreateOptionRequest(
       option: json['option'] as String,
       testStageId: (json['testStageId'] as num).toInt(),
       isCorrect: json['isCorrect'] as bool,
     );
 
-Map<String, dynamic> _$OptionToJson(Option instance) => <String, dynamic>{
-      'id': instance.id,
+Map<String, dynamic> _$CreateOptionRequestToJson(
+        CreateOptionRequest instance) =>
+    <String, dynamic>{
       'option': instance.option,
       'testStageId': instance.testStageId,
       'isCorrect': instance.isCorrect,

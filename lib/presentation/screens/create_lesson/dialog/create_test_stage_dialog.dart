@@ -15,7 +15,7 @@ class CreateTestStageDialog extends StatefulWidget {
 }
 
 class _CreateTestStageDialogState extends State<CreateTestStageDialog> {
-  TestStageType? testStageType;
+  TestStageType testStageType = TestStageType.OPTIONAL;
   final _optionController = TextEditingController();
 
   void onTypeChanged(TestStageType? type) {
@@ -63,7 +63,7 @@ class _CreateTestStageDialogState extends State<CreateTestStageDialog> {
               child: ElevatedButton(
                   onPressed: () {
                     widget.onOk(_optionController.text,
-                        testStageType ?? TestStageType.OPTIONAL);
+                        testStageType);
                     context.pop();
                   },
                   child: Text(

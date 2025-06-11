@@ -16,6 +16,11 @@ abstract class CourseApiClient {
   Future<List<Course>> getCourses(
       {@Query("skip") int? skip, @Query("take") int? take});
 
+  @DELETE("/course/{courseId}/lesson/{lessonId}")
+  Future<void> deleteLesson(
+      {@Path("courseId") required int courseId,
+      @Path("lessonId") required int lessonId});
+
   @GET("/course")
   Future<List<Course>> getAllCoursesDeep(
       {@Query("skip") int? skip, @Query("take") int? take});

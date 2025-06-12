@@ -11,6 +11,8 @@ import 'package:coursera/presentation/screens/lesson_info/lesson_info_screen.dar
 import 'package:coursera/presentation/screens/profile/profile_screen.dart';
 import 'package:coursera/presentation/screens/root/root_screen.dart';
 import 'package:coursera/presentation/screens/service/service_screen.dart';
+import 'package:coursera/presentation/screens/student_course_info/student_course_info_screen.dart';
+import 'package:coursera/presentation/screens/student_profile_screen/student_profile_screen.dart';
 import 'package:coursera/router/auth_route_guard.dart';
 import 'package:flutter/material.dart';
 
@@ -42,9 +44,11 @@ class AppRouter extends RootStackRouter {
             AutoRoute(path: 'profile', page: ProfileRoute.page),
             AutoRoute(path: 'service', page: ServiceRoute.page),
             AutoRoute(path: 'dashboard', page: DashboardRoute.page),
+            AutoRoute(path: 'student-profile', page: StudentProfileRoute.page),
           ],
         ),
         AutoRoute(path: '/course-info', page: CourseInfoRoute.page),
+        AutoRoute(path: '/student-course-info', page: StudentCourseInfoRoute.page),
         // AutoRoute(path: '/test', page: CourseInfoRoute.page),
         AutoRoute(path: '/lesson-info', page: LessonInfoRoute.page),
         AutoRoute(path: '/create-course', page: CreateCourseRoute.page),

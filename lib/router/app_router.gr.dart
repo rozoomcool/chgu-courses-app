@@ -309,3 +309,66 @@ class ServiceRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [StudentCourseInfoScreen]
+class StudentCourseInfoRoute extends PageRouteInfo<StudentCourseInfoRouteArgs> {
+  StudentCourseInfoRoute({
+    Key? key,
+    required int id,
+    List<PageRouteInfo>? children,
+  }) : super(
+          StudentCourseInfoRoute.name,
+          args: StudentCourseInfoRouteArgs(key: key, id: id),
+          initialChildren: children,
+        );
+
+  static const String name = 'StudentCourseInfoRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<StudentCourseInfoRouteArgs>();
+      return StudentCourseInfoScreen(key: args.key, id: args.id);
+    },
+  );
+}
+
+class StudentCourseInfoRouteArgs {
+  const StudentCourseInfoRouteArgs({this.key, required this.id});
+
+  final Key? key;
+
+  final int id;
+
+  @override
+  String toString() {
+    return 'StudentCourseInfoRouteArgs{key: $key, id: $id}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! StudentCourseInfoRouteArgs) return false;
+    return key == other.key && id == other.id;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ id.hashCode;
+}
+
+/// generated route for
+/// [StudentProfileScreen]
+class StudentProfileRoute extends PageRouteInfo<void> {
+  const StudentProfileRoute({List<PageRouteInfo>? children})
+      : super(StudentProfileRoute.name, initialChildren: children);
+
+  static const String name = 'StudentProfileRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      return const StudentProfileScreen();
+    },
+  );
+}

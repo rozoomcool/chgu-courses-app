@@ -34,7 +34,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
       LoadCourses event, Emitter<CourseState> emit) async {
     emit(CourseLoading());
     try {
-      final request = await repository.getCourses();
+      final request = await repository.getCourses(skip: 0, take: 100);
       emit(CourseLoaded(request));
     } catch (e) {
       debugPrint(e.toString());

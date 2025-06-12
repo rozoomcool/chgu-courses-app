@@ -7,6 +7,7 @@ import 'package:coursera/presentation/screens/create_lesson/bloc/create_lesson_b
 import 'package:coursera/presentation/screens/create_lesson/bottom_sheet/bloc/test_edit_bloc.dart';
 import 'package:coursera/presentation/screens/lesson_info/bloc/lesson_info_bloc.dart';
 import 'package:coursera/presentation/screens/profile/bloc/profile_screen_bloc.dart';
+import 'package:coursera/presentation/screens/student_course_info/bloc/student_course_info_bloc.dart';
 import 'package:coursera/router/app_router.dart';
 import 'package:coursera/utils/theme.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +39,7 @@ class _MainAppState extends State<MainApp> {
         BlocProvider(create: (context) => CreateLessonBloc(GetIt.I())),
         BlocProvider(create: (context) => LessonInfoBloc(GetIt.I(), GetIt.I())),
         BlocProvider(create: (context) => TestEditBloc(GetIt.I())),
+        BlocProvider(create: (context) => StudentCourseInfoBloc(GetIt.I(), GetIt.I())),
       ],
       child: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {

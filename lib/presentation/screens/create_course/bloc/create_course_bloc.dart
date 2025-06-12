@@ -62,7 +62,7 @@ class CreateCourseBloc extends Bloc<CreateCourseEvent, CreateCourseState> {
     emit(CreateCourseLoadingState());
     try {
       final course = await courseApiRepo.getCourse(event.id,
-          teacher: false, students: false, lessons: false);
+          teacher: false, lessons: false);
 
       emit(CreateCourseLoadedState(course: course));
     } catch (e) {

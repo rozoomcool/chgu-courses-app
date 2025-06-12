@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class CreateOptionDialog extends StatefulWidget {
   const CreateOptionDialog({super.key, required this.onCreate});
@@ -72,6 +71,5 @@ class _CreateOptionDialogState extends State<CreateOptionDialog> {
         ),
       ),
     );
-    ;
   }
 }

@@ -1,7 +1,6 @@
 import 'dart:io';
-import 'package:auto_route/auto_route.dart';
+import 'package:coursera/domain/model/admission/course_admission.dart';
 import 'package:coursera/domain/model/course/course.dart';
-import 'package:coursera/domain/model/course/update_course_request.dart';
 import 'package:coursera/utils/constants.dart';
 import 'package:retrofit/retrofit.dart';
 import 'package:dio/dio.dart';
@@ -31,8 +30,7 @@ abstract class CourseApiClient {
   @GET("/course/{id}")
   Future<Course> getCourse(@Path("id") int id,
       {@Query("teacher") bool teacher = false,
-      @Query("lessons") bool lessons = false,
-      @Query("students") bool students = false});
+      @Query("lessons") bool lessons = false});
 
   @POST("/course/")
   @MultiPart()
@@ -54,4 +52,24 @@ abstract class CourseApiClient {
 
   @DELETE("/course/{id}")
   Future<HttpResponse<Course>> deleteCourse(@Path("id") int id);
+
+  @POST("/course/{courseId}/admission")
+  Future<CourseAdmission> addAdmission(@Path("courseId") int id);
+
+  @PUT("/course/{courseId}/admission/user/{userId}")
+  Future<CourseAdmission> changeAdmission(
+      {@Path("courseId") required int courseId,
+      @Path("userId") required int userId,
+      @Query("admissionState") required AdmissionState admissionState});
+
+  @GET("/course/{courseId}/admission")
+  Future<List<CourseAdmission>> getAllAdmissionsByCourse(
+      {@Path("courseId") required int courseId});
+
+  @GET("/course/{courseId}/admission/user")
+  Future<CourseAdmission?> getMyAdmission(
+      {@Path("courseId") required int courseId});
+
+  @GET("/course/user/admission")
+  Future<List<CourseAdmission>> getAllAdmissionsByUser();
 }

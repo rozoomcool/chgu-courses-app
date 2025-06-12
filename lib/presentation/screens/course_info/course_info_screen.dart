@@ -191,14 +191,14 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
                                   ),
                                   title: Text(state.course.lessons![i].title),
                                   subtitle: const Text("Непройдено"),
-                                  trailing: IconButton(
+                                  trailing: state.isOwner ? IconButton(
                                     icon: Icon(Iconsax.edit),
                                     onPressed: () {
                                       context.pushRoute(CreateLessonRoute(
                                           id: state.course.lessons![i].id,
                                           courseId: widget.id));
                                     },
-                                  ),
+                                  ) : SizedBox(),
                                 ),
                               ),
                             ),

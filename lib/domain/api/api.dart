@@ -1,16 +1,16 @@
+import 'dart:convert';
+
+import 'package:coursera/domain/model/jwt_payload/jwt_payload.dart';
 import 'package:coursera/repository/shared/auth_shared_repository.dart';
 import 'package:coursera/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 
 Dio configureDio(AuthSharedRepository authSharedRepository) {
-
   final options = BaseOptions(
     baseUrl: 'http://$baseUrl',
-    headers: {
-      "Accept": "application/json",
-      "content-type": "application/json"
-      },
+    headers: {"Accept": "application/json", "content-type": "application/json"},
     connectTimeout: const Duration(seconds: 5),
     receiveTimeout: const Duration(seconds: 3),
   );
@@ -21,8 +21,62 @@ Dio configureDio(AuthSharedRepository authSharedRepository) {
     onRequest: (options, handler) async {
       print("::: ${authSharedRepository.getAccessToken()}");
       options.headers["Authorization"] =
-          "Bearer ${authSharedRepository.getAccessToken()}";
+          "Bearer ${GetIt.I<AuthSharedRepository>().getAccessToken()}";
       return handler.next(options);
+    },
+    onError: (error, handler) async {
+      if (error.response != null && error.response?.statusCode == 401) {
+        try {
+          // Get refresh token from repository
+          final refreshToken = authSharedRepository.getRefreshToken();
+
+          if (refreshToken.isNotEmpty) {
+
+            debugPrint("|||| START REFRESH");
+            // Call refresh token endpoint
+            final refreshResponse = await dio.post(
+              '$baseUrl/api/v1/auth/refresh',
+              data: {'refreshToken': refreshToken},
+            );
+
+            debugPrint("|||| ${refreshResponse.statusCode} " + refreshResponse.data.toString());
+
+            final data = JwtPayload.fromJson(refreshResponse.data);
+
+            // Save new tokens
+            final newAccessToken = data.access;
+            final newRefreshToken = data.refresh;
+
+            authSharedRepository.setTokens(newAccessToken, newRefreshToken);
+            authSharedRepository.setId(data.user.id);
+            authSharedRepository.setEmail(data.user.email);
+
+            // Update headers with new token
+            error.requestOptions.headers["Authorization"] =
+                "Bearer $newAccessToken";
+
+            // Retry the original request
+            final retryResponse = await dio.request(
+              error.requestOptions.uri.toString(),
+              data: error.requestOptions.data,
+              queryParameters: error.requestOptions.queryParameters,
+              options: Options(
+                method: error.requestOptions.method,
+                headers: error.requestOptions.headers,
+              ),
+            );
+
+            return handler.resolve(retryResponse);
+          }
+        } catch (refreshError) {
+          debugPrint("|||| START REFRESH: ${refreshError}");
+          // Handle refresh token failure (e.g., logout user)
+          authSharedRepository.clear();
+          // Optionally redirect to login
+          return handler.next(error);
+        }
+      }
+      return handler.next(error);
     },
   ));
 

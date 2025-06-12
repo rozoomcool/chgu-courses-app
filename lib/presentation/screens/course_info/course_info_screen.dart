@@ -26,8 +26,6 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
     context.read<CourseInfoBloc>().loadCourse(widget.id);
   }
 
-  void onNavHistUpdate() => load();
-
   void onLongPressCard(int lessonId) {
     showDialog(
         context: context,
@@ -71,7 +69,9 @@ class _CourseInfoScreenState extends State<CourseInfoScreen> {
   void initState() {
     super.initState();
     load();
-    context.router.addListener(onNavHistUpdate);
+    context.router.addListener(() {
+      load();
+    });
   }
 
   @override

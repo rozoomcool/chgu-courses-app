@@ -23,7 +23,7 @@ class CreateTestStageCard extends StatelessWidget {
     return SizedBox(
         width: double.infinity,
         child: Card(
-          color: const Color.fromARGB(255, 223, 223, 232),
+          color: const Color.fromARGB(255, 234, 234, 243),
           elevation: 1,
           child: Padding(
             padding: const EdgeInsets.all(16.0),

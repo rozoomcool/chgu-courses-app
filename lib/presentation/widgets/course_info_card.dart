@@ -1,7 +1,17 @@
+import 'package:coursera/domain/model/course/course.dart';
 import 'package:coursera/presentation/widgets/text_chip.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+
+Color complexityColor(Complexity complexity) {
+  return {
+        Complexity.EASY: Colors.green,
+        Complexity.MEDIUM: Colors.deepOrange,
+        Complexity.HARD: Colors.pink,
+      }[complexity] ??
+      Colors.green;
+}
 
 class CourseInfoCard extends StatelessWidget {
   const CourseInfoCard(
@@ -12,7 +22,8 @@ class CourseInfoCard extends StatelessWidget {
       required this.peopleCount,
       this.onTap,
       this.onDelete,
-      required this.imageUrl});
+      required this.imageUrl,
+      required this.complexity});
 
   final String title;
   final String description;
@@ -21,6 +32,7 @@ class CourseInfoCard extends StatelessWidget {
   final int peopleCount;
   final Function? onTap;
   final Function? onDelete;
+  final Complexity complexity;
 
   @override
   Widget build(BuildContext context) {
@@ -94,9 +106,14 @@ class CourseInfoCard extends StatelessWidget {
                             color: Colors.black,
                           )),
                       TextChip(
-                          label: Text("$rating",
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          icon: const Icon(Iconsax.star, color: Colors.black)),
+                          label: Text(complexity.name,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodyLarge
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w900,
+                                      color: complexityColor(complexity))),
+                          icon: const Icon(Iconsax.arrow_up, color: Colors.black)),
                     ],
                   ),
                   Row(

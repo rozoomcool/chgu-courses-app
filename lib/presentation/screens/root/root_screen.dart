@@ -45,7 +45,7 @@ class RootScreen extends StatelessWidget {
                       width: 8,
                     ),
                     Text(
-                      "TechUp",
+                      "CourseUp",
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           fontSize: 28,

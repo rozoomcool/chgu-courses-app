@@ -65,14 +65,14 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
         lecture: jsonEncode(_controller.document.toDelta().toJson()));
   }
 
-  @override
-  void didUpdateWidget(covariant CreateLessonScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  // @override
+  // void didUpdateWidget(covariant CreateLessonScreen oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
 
-    if (widget.id != oldWidget.id) {
-      loadLesson();
-    }
-  }
+  //   if (widget.id != oldWidget.id) {
+  //     loadLesson();
+  //   }
+  // }
 
   Future<void> onTestTap(int lessonId, int? testId) async {
     await showModalBottomSheet(
@@ -117,9 +117,9 @@ class _CreateLessonScreenState extends State<CreateLessonScreen> {
       }
     });
 
-    context.router.navigationHistory.addListener(() {
-      loadLesson();
-    });
+    // context.router.navigationHistory.addListener(() {
+    //   loadLesson();
+    // });
   }
 
   @override

@@ -1,5 +1,4 @@
 import 'package:coursera/domain/api/lesson/lesson_api_client.dart';
-import 'package:coursera/domain/model/course/course.dart';
 import 'package:coursera/domain/model/lesson/lesson.dart';
 import 'package:coursera/repository/shared/auth_shared_repository.dart';
 import 'package:flutter/widgets.dart';

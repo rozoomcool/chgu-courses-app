@@ -38,15 +38,15 @@ class CreateLessonBloc extends Bloc<CreateLessonEvent, CreateLessonState> {
     emit(CreateLessonLoadingState());
     try {
       if (event.id == null) {
+        debugPrint("|||| Create LESSON");
         final lesson = await repository.create(CreateLessonRequest(
-            title: "",
-            courseId: event.courseId,
-            lecture: ""));
+            title: "", courseId: event.courseId, lecture: ""));
         emit(CreateLessonLoadedState(lesson: lesson));
         return;
+      } else {
+        final lesson = await repository.getOne(event.id!);
+        emit(CreateLessonLoadedState(lesson: lesson));
       }
-      final lesson = await repository.getOne(event.id!);
-      emit(CreateLessonLoadedState(lesson: lesson));
     } catch (e) {
       debugPrint("||| error: ${e.toString()}");
       emit(CreateLessonErrorState(e.toString()));
@@ -61,24 +61,20 @@ class CreateLessonBloc extends Bloc<CreateLessonEvent, CreateLessonState> {
     debugPrint("||| state $state");
 
     // try {
-      final lessonId = (state as CreateLessonLoadedState).lesson?.id;
-      emit(CreateLessonLoadingState());
-      if (lessonId == null) {
-        final lesson = await repository.create(CreateLessonRequest(
-            title: event.title,
+    final lessonId = (state as CreateLessonLoadedState).lesson?.id;
+    if (lessonId == null) {
+      emit(CreateLessonErrorState("Lesson Is Null"));
+      return;
+    }
+    emit(CreateLessonLoadingState());
+
+    final lesson = await repository.update(
+        lessonId,
+        UpdateLessonRequest(
             courseId: event.courseId,
+            title: event.title,
             lecture: event.lecture));
-        emit(CreateLessonLoadedState(lesson: lesson));
-        return;
-      } else {
-        final lesson = await repository.update(
-            lessonId,
-            UpdateLessonRequest(
-                courseId: event.courseId,
-                title: event.title,
-                lecture: event.lecture));
-        emit(CreateLessonLoadedState(lesson: lesson));
-      }
+    emit(CreateLessonLoadedState(lesson: lesson));
     // } catch (e) {
     //   debugPrint("||| error: ${e.toString()}");
     //   emit(CreateLessonErrorState(e.toString()));

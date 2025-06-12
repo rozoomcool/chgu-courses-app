@@ -79,6 +79,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onTap: () async =>
                     await context.pushRoute(CourseInfoRoute(id: course.id)),
                 onDelete: () => _deleteCourse(course, index),
+                complexity: course.complexity,
               )),
           duration: const Duration(milliseconds: 300));
     });
@@ -266,6 +267,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                                   id: course.id)),
                                           onDelete: () =>
                                               _deleteCourse(course, index),
+                                          complexity: course.complexity,
                                         ),
                                       ),
                                     );

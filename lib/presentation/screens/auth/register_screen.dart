@@ -57,22 +57,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                            width: 68,
-                            height: 68,
+                            width: 52,
+                            height: 52,
                             child: SvgPicture.asset("assets/logo.svg")),
                         const SizedBox(
                           width: 16,
                         ),
-                        Text("EduGo",
+                        Text("CourseUp",
                             style: Theme.of(context)
                                 .textTheme
-                                .displaySmall
+                                .displayLarge
                                 ?.copyWith(
                                     fontWeight: FontWeight.w900,
-                                    fontSize: 66,
                                     color: Colors.white))
                       ],
                     ),
+                    SizedBox(height: 12,),
                     Text(
                       "Онлайн платформа для обучения",
                       textAlign: TextAlign.center,

@@ -1,6 +1,8 @@
 import 'package:coursera/domain/api/auth/auth_api_client.dart';
+import 'package:coursera/domain/api/user/user_api_client.dart';
 import 'package:coursera/domain/model/auth/auth_request.dart';
 import 'package:coursera/domain/model/auth/register_request.dart';
+import 'package:coursera/domain/model/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
@@ -17,23 +19,26 @@ class AuthCubit extends Cubit<AuthState> {
 
   final _authSharedRepository = GetIt.I<AuthSharedRepository>();
   final _scaffoldUtils = GetIt.I<CustomScaffoldUtil>();
-  final _userClient = AuthApiClient(GetIt.I<Dio>());
+  final _authApiClient = AuthApiClient(GetIt.I<Dio>());
+  final _userApiClient = UserApiClient(GetIt.I<Dio>());
 
-  init() {
+  Future<void> init() async {
     if (_authSharedRepository.getAccessToken().isNotEmpty &&
         _authSharedRepository.getAccessToken() != "") {
-      emit(AuthenticatedAuthState());
+      final user = await _userApiClient.findOne();
+      emit(AuthenticatedAuthState(user: user));
     }
   }
 
   Future<void> signIn(AuthRequest authRequest) async {
     try {
-      var data = await _userClient.login(authRequest);
+      var data = await _authApiClient.login(authRequest);
       debugPrint(data.toString());
       _authSharedRepository.setTokens(data.access, data.refresh);
       _authSharedRepository.setEmail(data.user.email);
       _authSharedRepository.setId(data.user.id);
-      emit(AuthenticatedAuthState());
+      final user = await _userApiClient.findOne();
+      emit(AuthenticatedAuthState(user: user));
     } catch (e) {
       debugPrint("ERROR SIGN_IN: $e");
       _scaffoldUtils.showErrorSnack("Произошла ошибка авторизации");
@@ -44,7 +49,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       debugPrint(request.toJson().toString());
 
-      await _userClient.create(request);
+      await _authApiClient.create(request);
       emit(SuccessfluRegisteredAuthState());
     } catch (e) {
       debugPrint(e.toString());

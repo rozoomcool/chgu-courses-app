@@ -8,8 +8,13 @@ final class UnknownAuthState extends AuthState {
 }
 
 final class AuthenticatedAuthState extends AuthState {
+
+  final User user;
+
+  AuthenticatedAuthState({required this.user});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [user];
 }
 
 final class SuccessfluRegisteredAuthState extends AuthState {

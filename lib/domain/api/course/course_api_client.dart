@@ -70,6 +70,6 @@ abstract class CourseApiClient {
   Future<CourseAdmission?> getMyAdmission(
       {@Path("courseId") required int courseId});
 
-  @GET("/course/user/admission")
+  @GET("/course/user/admissions")
   Future<List<CourseAdmission>> getAllAdmissionsByUser();
 }

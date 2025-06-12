@@ -21,7 +21,7 @@ final customTheme = (BuildContext context, Brightness brightness) => ThemeData(
         style: ElevatedButton.styleFrom(
             elevation: 0,
             backgroundColor: AppColors.primaryColor,
-            foregroundColor: AppColors.primaryColor,
+            foregroundColor: AppColors.backgroundColor,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12)))),
     filledButtonTheme: FilledButtonThemeData(

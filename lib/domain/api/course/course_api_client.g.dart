@@ -432,7 +432,7 @@ class _CourseApiClient implements CourseApiClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/course/user/admission',
+            '/course/user/admissions',
             queryParameters: queryParameters,
             data: _data,
           )

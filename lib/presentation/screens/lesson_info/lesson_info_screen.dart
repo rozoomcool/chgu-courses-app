@@ -1,7 +1,10 @@
 import 'dart:convert';
 
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:coursera/presentation/screens/lesson_info/bloc/lesson_info_bloc.dart';
+import 'package:coursera/presentation/screens/student_test/student_test_screen.dart';
+import 'package:coursera/router/app_router.dart';
 import 'package:coursera/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -50,6 +53,16 @@ class _LessonInfoScreenState extends State<LessonInfoScreen> {
             appBar: AppBar(
               title: Text(state.lesson.title),
             ),
+            bottomNavigationBar: (state.lesson.test == null &&
+                    (state.lesson.test?.testStages.isEmpty ?? true))
+                ? SizedBox()
+                : BottomAppBar(
+                    child: ElevatedButton(
+                        child: Text("пройти тест"),
+                        onPressed: () => context.pushRoute(StudentTestRoute(
+                            lessonId: state.lesson.id,
+                            testId: state.lesson.test!.id))),
+                  ),
             body: Column(
               children: [
                 Expanded(

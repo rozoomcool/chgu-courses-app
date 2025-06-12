@@ -372,3 +372,67 @@ class StudentProfileRoute extends PageRouteInfo<void> {
     },
   );
 }
+
+/// generated route for
+/// [StudentTestScreen]
+class StudentTestRoute extends PageRouteInfo<StudentTestRouteArgs> {
+  StudentTestRoute({
+    Key? key,
+    required int lessonId,
+    required int testId,
+    List<PageRouteInfo>? children,
+  }) : super(
+          StudentTestRoute.name,
+          args: StudentTestRouteArgs(
+            key: key,
+            lessonId: lessonId,
+            testId: testId,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'StudentTestRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<StudentTestRouteArgs>();
+      return StudentTestScreen(
+        key: args.key,
+        lessonId: args.lessonId,
+        testId: args.testId,
+      );
+    },
+  );
+}
+
+class StudentTestRouteArgs {
+  const StudentTestRouteArgs({
+    this.key,
+    required this.lessonId,
+    required this.testId,
+  });
+
+  final Key? key;
+
+  final int lessonId;
+
+  final int testId;
+
+  @override
+  String toString() {
+    return 'StudentTestRouteArgs{key: $key, lessonId: $lessonId, testId: $testId}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! StudentTestRouteArgs) return false;
+    return key == other.key &&
+        lessonId == other.lessonId &&
+        testId == other.testId;
+  }
+
+  @override
+  int get hashCode => key.hashCode ^ lessonId.hashCode ^ testId.hashCode;
+}

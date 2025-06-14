@@ -17,6 +17,8 @@ Lesson _$LessonFromJson(Map<String, dynamic> json) => Lesson(
           ?.map((e) => LessonAttachment.fromJson(e as Map<String, dynamic>))
           .toList(),
       courseId: (json['courseId'] as num).toInt(),
+      createdAt: DateTime.parse(json['createdAt'] as String),
+      updatedAt: DateTime.parse(json['updatedAt'] as String),
     );
 
 Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
@@ -26,4 +28,6 @@ Map<String, dynamic> _$LessonToJson(Lesson instance) => <String, dynamic>{
       'test': instance.test,
       'attachments': instance.attachments,
       'courseId': instance.courseId,
+      'createdAt': instance.createdAt.toIso8601String(),
+      'updatedAt': instance.updatedAt.toIso8601String(),
     };

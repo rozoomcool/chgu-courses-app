@@ -283,7 +283,7 @@ class _CourseApiClient implements CourseApiClient {
       Options(method: 'DELETE', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/course/${id}',
+            '/course/delete/${id}',
             queryParameters: queryParameters,
             data: _data,
           )

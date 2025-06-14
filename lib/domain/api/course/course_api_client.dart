@@ -50,7 +50,7 @@ abstract class CourseApiClient {
     @Part() String? imageUrl,
   });
 
-  @DELETE("/course/{id}")
+  @DELETE("/course/delete/{id}")
   Future<HttpResponse<Course>> deleteCourse(@Path("id") int id);
 
   @POST("/course/{courseId}/admission")

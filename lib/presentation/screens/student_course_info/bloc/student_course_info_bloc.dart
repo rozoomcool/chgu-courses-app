@@ -34,6 +34,9 @@ class StudentCourseInfoBloc
     try {
       final course =
           await courseApiRepo.getCourse(event.id, teacher: true, lessons: true);
+      if (course.lessons != null) {
+        course.lessons!.sort((a, b) => a.createdAt.compareTo(b.createdAt));
+      }
       final admission = await courseApiRepo.getMyAdmission(courseId: course.id);
 
       emit(StudentCourseInfoLoadedState(course: course, admission: admission));

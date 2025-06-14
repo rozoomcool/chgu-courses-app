@@ -152,7 +152,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       ),
                                     )
                                   : Text(
-                                      "пока нет",
+                                      "Шарпудди",
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge,

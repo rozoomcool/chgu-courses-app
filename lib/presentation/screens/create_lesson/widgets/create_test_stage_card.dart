@@ -79,16 +79,22 @@ class CreateTestStageCard extends StatelessWidget {
                                 child: Row(
                                   spacing: 8,
                                   children: [
-                                    IconButton(
-                                        onPressed: () => onDeleteOption(
-                                            testStage.options[index].id),
-                                        icon: Icon(
-                                          Iconsax.trash,
-                                          color: Colors.red.shade400,
-                                        )),
-                                    Text(
-                                      testStage.options[index].option,
-                                      overflow: TextOverflow.ellipsis,
+                                    Expanded(
+                                      flex: 1,
+                                      child: IconButton(
+                                          onPressed: () => onDeleteOption(
+                                              testStage.options[index].id),
+                                          icon: Icon(
+                                            Iconsax.trash,
+                                            color: Colors.red.shade400,
+                                          )),
+                                    ),
+                                    Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        testStage.options[index].option,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
                                     ),
                                   ],
                                 )),

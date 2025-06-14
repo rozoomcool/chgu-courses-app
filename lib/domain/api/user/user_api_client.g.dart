@@ -10,7 +10,7 @@ part of 'user_api_client.dart';
 
 class _UserApiClient implements UserApiClient {
   _UserApiClient(this._dio, {this.baseUrl, this.errorLogger}) {
-    baseUrl ??= 'http://localhost:3000/api/v1/users';
+    baseUrl ??= 'http://localhost:3000/api/v1';
   }
 
   final Dio _dio;
@@ -30,7 +30,7 @@ class _UserApiClient implements UserApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/register',
+            '/users/register',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -49,7 +49,7 @@ class _UserApiClient implements UserApiClient {
       Options(method: 'GET', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/',
+            '/users/user/current',
             queryParameters: queryParameters,
             data: _data,
           )
@@ -77,7 +77,7 @@ class _UserApiClient implements UserApiClient {
       Options(method: 'POST', headers: _headers, extra: _extra)
           .compose(
             _dio.options,
-            '/login',
+            '/users/login',
             queryParameters: queryParameters,
             data: _data,
           )

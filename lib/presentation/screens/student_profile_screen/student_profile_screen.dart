@@ -124,7 +124,7 @@ class _StudentProfileScreenState extends State<StudentProfileScreen> {
                                       ),
                                     )
                                   : Text(
-                                      "пока нет",
+                                      "Бедный студент",
                                       style: Theme.of(context)
                                           .textTheme
                                           .titleLarge,

@@ -9,16 +9,16 @@ import 'package:coursera/utils/constants.dart';
 
 part 'user_api_client.g.dart';
 
-@RestApi(baseUrl: '$baseUrl/api/v1/users')
+@RestApi(baseUrl: '$baseUrl/api/v1')
 abstract class UserApiClient {
   factory UserApiClient(Dio dio, {String? baseUrl}) = _UserApiClient;
 
-  @POST('/register')
+  @POST('/users/register')
   Future<void> create(@Body() RegisterRequest authRequest);
 
-  @GET('/')
+  @GET('/users/user/current')
   Future<User> findOne();
 
-  @POST('/login')
+  @POST('/users/login')
   Future<JwtPayload> login(@Body() AuthRequest authRequest);
 }

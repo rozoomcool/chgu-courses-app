@@ -35,6 +35,7 @@ class CourseBloc extends Bloc<CourseEvent, CourseState> {
     emit(CourseLoading());
     try {
       final request = await repository.getCourses(skip: 0, take: 100);
+      request.sort((a, b) => b.createdAt.compareTo(a.createdAt),);
       emit(CourseLoaded(request));
     } catch (e) {
       debugPrint(e.toString());

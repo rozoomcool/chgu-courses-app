@@ -21,6 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
+        fit: StackFit.loose,
         children: [
           SingleChildScrollView(
             child: Column(
@@ -53,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Transform.translate(
               offset: Offset(0, -1),
               child: SizedBox(
-                height: 220,
+                height: 200,
                 child: GlossyCard(
                   strokeAlign: BorderSide.strokeAlignInside,
                   // width: double.infinity,
@@ -61,37 +62,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(32),
                       bottomRight: Radius.circular(32)),
-                  child: SafeArea(
-                    child: Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(24.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          spacing: 12,
-                          children: [
-                            Text(
-                              "Найти занятие",
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .headlineMedium
-                                  ?.copyWith(
-                                      fontWeight: FontWeight.w900),
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0, left: 24, right: 24, top: 36),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        spacing: 12,
+                        children: [
+                          Text(
+                            "Найти занятие",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineMedium
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w900),
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              filled: false,
+                              prefixIcon: Icon(Iconsax.search_favorite),
+                              // icon: Icon(Iconsax.search_favorite),
+                              hint: Text("Введите название активности"),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)
+                              )
                             ),
-                            TextField(
-                              decoration: InputDecoration(
-                                filled: false,
-                                prefixIcon: Icon(Iconsax.search_favorite),
-                                // icon: Icon(Iconsax.search_favorite),
-                                hint: Text("Введите название активности"),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(20)
-                                )
-                              ),
-                            )
-                          ],
-                        ),
+                          )
+                        ],
                       ),
                     ),
                   ),

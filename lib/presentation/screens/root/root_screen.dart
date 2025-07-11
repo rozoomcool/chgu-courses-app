@@ -54,7 +54,7 @@ class RootScreen extends StatelessWidget {
                 Container(
                   decoration: BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage("assets/rainy.jpg"),
+                          image: AssetImage("assets/sunny.jpg"),
                           fit: BoxFit.cover)),
                 ),
                 Container(
@@ -66,6 +66,8 @@ class RootScreen extends StatelessWidget {
                 AutoTabsScaffold(
                   // scaffoldKey: GetIt.I<CustomScaffoldUtil>().key,
                   backgroundColor: Colors.transparent,
+                  extendBody: true,
+                  extendBodyBehindAppBar: true,
                   // backgroundColor: AppColors.backgroundColor,
                   routes: [
                     if (authState.user.role == Role.STUDENT.name) HomeRoute(),

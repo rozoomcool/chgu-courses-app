@@ -1,4 +1,4 @@
-import 'package:coursera/utils/app_colors.dart';
+import 'package:eventrecs/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,7 +8,10 @@ final customTheme = (BuildContext context, Brightness brightness) => ThemeData(
         seedColor: AppColors.primaryColor, brightness: brightness),
     useMaterial3: true,
     brightness: brightness,
-    textTheme: GoogleFonts.montserratTextTheme(),
+    textTheme: GoogleFonts.montserratTextTheme().apply(
+      bodyColor: Colors.white,
+      displayColor: Colors.white
+    ),
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppColors.backgroundColor,

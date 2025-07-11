@@ -1,11 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coursera/domain/model/course/course.dart';
-import 'package:coursera/presentation/screens/profile/bloc/profile_screen_bloc.dart';
-import 'package:coursera/presentation/widgets/course_info_card.dart';
-import 'package:coursera/presentation/widgets/course_info_shimmer_card.dart';
-import 'package:coursera/router/app_router.dart';
-import 'package:coursera/utils/app_colors.dart';
-import 'package:coursera/utils/constants.dart';
+import 'package:eventrecs/presentation/screens/profile/bloc/profile_screen_bloc.dart';
+import 'package:eventrecs/router/app_router.dart';
+import 'package:eventrecs/utils/app_colors.dart';
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -57,32 +53,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       _animatedListKey.currentState
           ?.insertItem(i, duration: const Duration(milliseconds: 300));
     }
-  }
-
-  Future<void> _deleteCourse(Course course, int index) async {
-    context.read<ProfileScreenBloc>().deleteCourse(course.id, () {
-      _animatedListKey.currentState?.removeItem(
-          index,
-          (context, anim) => SlideTransition(
-              position: Tween<Offset>(
-                      begin: const Offset(-1, 0), end: const Offset(0, 0))
-                  .animate(CurvedAnimation(
-                      parent: anim,
-                      curve: Curves.easeIn,
-                      reverseCurve: Curves.easeInBack)),
-              child: CourseInfoCard(
-                title: course.title,
-                description: course.description,
-                imageUrl: "$uploadsUrl/${course.imageUrl}",
-                rating: 4.9,
-                peopleCount: 136,
-                onTap: () async =>
-                    await context.pushRoute(CourseInfoRoute(id: course.id)),
-                onDelete: () => _deleteCourse(course, index),
-                complexity: course.complexity,
-              )),
-          duration: const Duration(milliseconds: 300));
-    });
   }
 
   @override
@@ -188,108 +158,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Column(
-                        children: [
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                "Мои Курсы",
-                                style: Theme.of(context).textTheme.titleLarge,
-                                textAlign: TextAlign.start,
-                              ),
-                              OutlinedButton.icon(
-                                onPressed: () =>
-                                    context.pushRoute(CreateCourseRoute()),
-                                label: const Text("Добавить"),
-                                icon: const Icon(Iconsax.add),
-                              )
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 24,
-                          ),
-                          state is! ProfileScreenLoadedState
-                              ? ListView.separated(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    return const CourseInfoShimmerCard();
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index) {
-                                    return const SizedBox(
-                                      height: 12,
-                                    );
-                                  },
-                                )
-                              : AnimatedList.separated(
-                                  key: _animatedListKey,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  initialItemCount: state.courses?.length ?? 0,
-                                  itemBuilder: (context, index, anim) {
-                                    if (state.courses == null ||
-                                        index >= state.courses!.length) {
-                                      return const SizedBox.shrink();
-                                    }
-
-                                    final course = state.courses![index];
-                                    return FadeTransition(
-                                      opacity: Tween<double>(begin: 0, end: 1)
-                                          .animate(CurvedAnimation(
-                                              parent: anim,
-                                              curve: Curves.easeIn,
-                                              reverseCurve: Curves.easeInBack)),
-                                      child: ScaleTransition(
-                                        scale: Tween<double>(begin: 0.4, end: 1)
-                                            .animate(CurvedAnimation(
-                                                parent: anim,
-                                                curve: Curves.easeIn,
-                                                reverseCurve:
-                                                    Curves.easeInBack)),
-                                        child: CourseInfoCard(
-                                          title: course.title,
-                                          description: course.description,
-                                          imageUrl:
-                                              "$uploadsUrl/${course.imageUrl}",
-                                          rating: 4.9,
-                                          peopleCount: 136,
-                                          onTap: () async => await context
-                                              .pushRoute(CourseInfoRoute(
-                                                  id: course.id)),
-                                          onDelete: () =>
-                                              _deleteCourse(course, index),
-                                          complexity: course.complexity,
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  separatorBuilder:
-                                      (BuildContext context, int index, anim) {
-                                    return const SizedBox(
-                                      height: 12,
-                                    );
-                                  },
-                                  removedSeparatorBuilder:
-                                      (BuildContext context, int index,
-                                          Animation<double> animation) {
-                                    return const SizedBox();
-                                  },
-                                ),
-                          const SizedBox(
-                            height: 70,
-                          )
-                        ],
-                      ),
-                    )
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                    //   child: Column(
+                    //     children: [
+                    //       const SizedBox(
+                    //         height: 24,
+                    //       ),
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         crossAxisAlignment: CrossAxisAlignment.center,
+                    //         children: [
+                    //           Text(
+                    //             "Мои Курсы",
+                    //             style: Theme.of(context).textTheme.titleLarge,
+                    //             textAlign: TextAlign.start,
+                    //           ),
+                    //           OutlinedButton.icon(
+                    //             onPressed: null,
+                    //             label: const Text("Добавить"),
+                    //             icon: const Icon(Iconsax.add),
+                    //           )
+                    //         ],
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 24,
+                    //       ),
+                    //       const SizedBox(
+                    //         height: 70,
+                    //       )
+                    //     ],
+                    //   ),
+                    // )
                   ],
                 ),
               ),
@@ -300,9 +200,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       listener: (BuildContext context, ProfileScreenState state) {
         if (state is ProfileScreenErrorState) {
           context.read<ProfileScreenBloc>().loadData();
-        }
-        if (state is ProfileScreenLoadedState) {
-          _animateList(state.courses?.length ?? 0);
         }
       },
     );

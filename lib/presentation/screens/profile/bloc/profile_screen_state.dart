@@ -14,14 +14,12 @@ class ProfileScreenLoadingState extends ProfileScreenState {
 
 class ProfileScreenLoadedState extends ProfileScreenState {
   final User user;
-  final Profile profile;
-  final List<Course>? courses;
 
   ProfileScreenLoadedState(
-      {required this.user, required this.profile, required this.courses});
+      {required this.user});
 
   @override
-  List<Object?> get props => [user, profile, courses];
+  List<Object?> get props => [user];
 }
 
 class ProfileScreenErrorState extends ProfileScreenState {

@@ -1,6 +1,6 @@
-import 'package:coursera/domain/model/jwt_payload/jwt_payload.dart';
-import 'package:coursera/repository/shared/auth_shared_repository.dart';
-import 'package:coursera/utils/constants.dart';
+import 'package:eventrecs/domain/model/jwt_payload/jwt_payload.dart';
+import 'package:eventrecs/repository/shared/auth_shared_repository.dart';
+import 'package:eventrecs/utils/constants.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';

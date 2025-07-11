@@ -1,11 +1,8 @@
-import 'package:coursera/app/app.dart';
-import 'package:coursera/domain/api/api.dart';
-import 'package:coursera/domain/api/course/course_api_client.dart';
-import 'package:coursera/domain/api/lesson/lesson_api_client.dart';
-import 'package:coursera/domain/api/test/test_api_client.dart';
-import 'package:coursera/domain/api/user/user_api_client.dart';
-import 'package:coursera/repository/shared/auth_shared_repository.dart';
-import 'package:coursera/utils/custom_scaffold_util.dart';
+import 'package:eventrecs/app/app.dart';
+import 'package:eventrecs/domain/api/api.dart';
+import 'package:eventrecs/domain/api/user/user_api_client.dart';
+import 'package:eventrecs/repository/shared/auth_shared_repository.dart';
+import 'package:eventrecs/utils/custom_scaffold_util.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
@@ -21,10 +18,7 @@ void main() async {
   GetIt.I.registerFactory(() => authSharedRepository);
   GetIt.I.registerFactory(() => CustomScaffoldUtil());
   GetIt.I.registerFactory(() => configureDio(authSharedRepository));
-  GetIt.I.registerFactory(() => CourseApiClient(GetIt.I<Dio>()));
   GetIt.I.registerFactory(() => UserApiClient(GetIt.I<Dio>()));
-  GetIt.I.registerFactory(() => LessonApiClient(GetIt.I<Dio>()));
-  GetIt.I.registerFactory(() => TestApiClient(GetIt.I<Dio>()));
 
   runApp(const MainApp());
 }

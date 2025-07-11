@@ -6,16 +6,3 @@ class ProfileScreenLoadEvent extends ProfileScreenEvent {
   @override
   List<Object?> get props => [];
 }
-
-class ProfileScreenDeleteEvent extends ProfileScreenEvent {
-  final int id;
-  final Function onDeleteSuccessful;
-
-  ProfileScreenDeleteEvent({
-    required this.id,
-    required this.onDeleteSuccessful,
-  });
-
-  @override
-  List<Object?> get props => [id];
-}

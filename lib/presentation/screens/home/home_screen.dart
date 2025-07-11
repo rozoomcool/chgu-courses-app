@@ -1,13 +1,8 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coursera/domain/state/course/course_bloc.dart';
-import 'package:coursera/presentation/widgets/course_info_card.dart';
-import 'package:coursera/router/app_router.dart';
-import 'package:coursera/utils/app_colors.dart';
-import 'package:coursera/utils/constants.dart';
-import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:eventrecs/presentation/widgets/activity_card_glossy.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:glossy/glossy.dart';
+import 'package:iconsax/iconsax.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -18,62 +13,86 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final List<String> activities = List.generate(20, (i) => 'Activity ${i + 1}');
+
   @override
   Widget build(BuildContext context) {
-    return ColoredBox(
-      color: AppColors.surfaceColor,
-      child: CustomMaterialIndicator(
-        useMaterialContainer: false,
-        indicatorBuilder: (context, controller) =>
-            LoadingAnimationWidget.staggeredDotsWave(
-                color: AppColors.primaryColor, size: 32),
-        onRefresh: () async {
-          context.read<CourseBloc>().loadCourses();
-        },
-        child: BlocConsumer<CourseBloc, CourseState>(
-            builder: (context, state) {
-              if (state is CourseLoaded) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 16,
-                        ),
-                        AnimatedList(
-                            physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            initialItemCount: state.courses.length,
-                            itemBuilder: (context, i, animation) {
-                              final course = state.courses[i];
-                              return Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: CourseInfoCard(
-                                    onTap: () {
-                                      context.pushRoute(
-                                          StudentCourseInfoRoute(id: course.id));
-                                    },
-                                    title: course.title,
-                                    description: course.description,
-                                    rating: 4,
-                                    peopleCount: 100,
-                                    imageUrl: "$uploadsUrl/${course.imageUrl}",
-                                    complexity: course.complexity),
-                              );
-                            }),
-                        SizedBox(
-                          height: 16,
-                        )
-                      ],
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 162,
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return GlossyActivityCard(
+                      previewUrl:
+                          "https://miro.medium.com/v2/resize:fit:1200/1*3nvcKMlIJTpOguHbOaNP_A.jpeg",
+                      title: "Activity 1",
+                      description: "Description 1",
+                      weatherTypes: ["Sunny", "Cloudy"],
+                      timeOfDay: ["Morning", "Afternoon"],
+                      minBudget: 100,
+                      isOutdoor: false,
+                      isHomeActivity: false,
+                      isActive: true,
+                    );
+                  },
+                  itemCount: activities.length,
+                ),
+              ],
+            ),
+          ),
+          Transform.translate(
+              offset: Offset(0, -1),
+              child: GlossyContainer(
+                height: 220,
+                width: double.infinity,
+                borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(32),
+                    bottomRight: Radius.circular(32)),
+                child: SafeArea(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24.0),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        spacing: 12,
+                        children: [
+                          Text(
+                            "Найти занятие",
+                            style: Theme.of(context)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                    fontWeight: FontWeight.w900),
+                          ),
+                          TextField(
+                            decoration: InputDecoration(
+                              filled: false,
+                              prefixIcon: Icon(Iconsax.search_favorite),
+                              // icon: Icon(Iconsax.search_favorite),
+                              hint: Text("Введите название активности"),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(20)
+                              )
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                );
-              } else {
-                return CircularProgressIndicator();
-              }
-            },
-            listener: (BuildContext context, CourseState state) {}),
+                ),
+              )),
+        ],
       ),
     );
   }

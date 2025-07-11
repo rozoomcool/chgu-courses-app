@@ -1,8 +1,8 @@
-import 'package:coursera/domain/api/auth/auth_api_client.dart';
-import 'package:coursera/domain/api/user/user_api_client.dart';
-import 'package:coursera/domain/model/auth/auth_request.dart';
-import 'package:coursera/domain/model/auth/register_request.dart';
-import 'package:coursera/domain/model/user/user.dart';
+import 'package:eventrecs/domain/api/auth/auth_api_client.dart';
+import 'package:eventrecs/domain/api/user/user_api_client.dart';
+import 'package:eventrecs/domain/model/auth/auth_request.dart';
+import 'package:eventrecs/domain/model/auth/register_request.dart';
+import 'package:eventrecs/domain/model/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';

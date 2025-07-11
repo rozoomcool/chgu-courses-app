@@ -11,6 +11,89 @@
 part of 'app_router.dart';
 
 /// generated route for
+/// [ActivityDetailsScreen]
+class ActivityDetailsRoute extends PageRouteInfo<ActivityDetailsRouteArgs> {
+  ActivityDetailsRoute({
+    Key? key,
+    required String id,
+    required String title,
+    String? description,
+    String? previewUrl,
+    List<PageRouteInfo>? children,
+  }) : super(
+          ActivityDetailsRoute.name,
+          args: ActivityDetailsRouteArgs(
+            key: key,
+            id: id,
+            title: title,
+            description: description,
+            previewUrl: previewUrl,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'ActivityDetailsRoute';
+
+  static PageInfo page = PageInfo(
+    name,
+    builder: (data) {
+      final args = data.argsAs<ActivityDetailsRouteArgs>();
+      return ActivityDetailsScreen(
+        key: args.key,
+        id: args.id,
+        title: args.title,
+        description: args.description,
+        previewUrl: args.previewUrl,
+      );
+    },
+  );
+}
+
+class ActivityDetailsRouteArgs {
+  const ActivityDetailsRouteArgs({
+    this.key,
+    required this.id,
+    required this.title,
+    this.description,
+    this.previewUrl,
+  });
+
+  final Key? key;
+
+  final String id;
+
+  final String title;
+
+  final String? description;
+
+  final String? previewUrl;
+
+  @override
+  String toString() {
+    return 'ActivityDetailsRouteArgs{key: $key, id: $id, title: $title, description: $description, previewUrl: $previewUrl}';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    if (other is! ActivityDetailsRouteArgs) return false;
+    return key == other.key &&
+        id == other.id &&
+        title == other.title &&
+        description == other.description &&
+        previewUrl == other.previewUrl;
+  }
+
+  @override
+  int get hashCode =>
+      key.hashCode ^
+      id.hashCode ^
+      title.hashCode ^
+      description.hashCode ^
+      previewUrl.hashCode;
+}
+
+/// generated route for
 /// [AuthScreen]
 class AuthRoute extends PageRouteInfo<void> {
   const AuthRoute({List<PageRouteInfo>? children})
@@ -24,150 +107,6 @@ class AuthRoute extends PageRouteInfo<void> {
       return const AuthScreen();
     },
   );
-}
-
-/// generated route for
-/// [CourseInfoScreen]
-class CourseInfoRoute extends PageRouteInfo<CourseInfoRouteArgs> {
-  CourseInfoRoute({Key? key, required int id, List<PageRouteInfo>? children})
-      : super(
-          CourseInfoRoute.name,
-          args: CourseInfoRouteArgs(key: key, id: id),
-          initialChildren: children,
-        );
-
-  static const String name = 'CourseInfoRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<CourseInfoRouteArgs>();
-      return CourseInfoScreen(key: args.key, id: args.id);
-    },
-  );
-}
-
-class CourseInfoRouteArgs {
-  const CourseInfoRouteArgs({this.key, required this.id});
-
-  final Key? key;
-
-  final int id;
-
-  @override
-  String toString() {
-    return 'CourseInfoRouteArgs{key: $key, id: $id}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! CourseInfoRouteArgs) return false;
-    return key == other.key && id == other.id;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ id.hashCode;
-}
-
-/// generated route for
-/// [CreateCourseScreen]
-class CreateCourseRoute extends PageRouteInfo<CreateCourseRouteArgs> {
-  CreateCourseRoute({Key? key, int? id, List<PageRouteInfo>? children})
-      : super(
-          CreateCourseRoute.name,
-          args: CreateCourseRouteArgs(key: key, id: id),
-          initialChildren: children,
-        );
-
-  static const String name = 'CreateCourseRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<CreateCourseRouteArgs>(
-        orElse: () => const CreateCourseRouteArgs(),
-      );
-      return CreateCourseScreen(key: args.key, id: args.id);
-    },
-  );
-}
-
-class CreateCourseRouteArgs {
-  const CreateCourseRouteArgs({this.key, this.id});
-
-  final Key? key;
-
-  final int? id;
-
-  @override
-  String toString() {
-    return 'CreateCourseRouteArgs{key: $key, id: $id}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! CreateCourseRouteArgs) return false;
-    return key == other.key && id == other.id;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ id.hashCode;
-}
-
-/// generated route for
-/// [CreateLessonScreen]
-class CreateLessonRoute extends PageRouteInfo<CreateLessonRouteArgs> {
-  CreateLessonRoute({
-    Key? key,
-    int? id,
-    required int courseId,
-    List<PageRouteInfo>? children,
-  }) : super(
-          CreateLessonRoute.name,
-          args: CreateLessonRouteArgs(key: key, id: id, courseId: courseId),
-          initialChildren: children,
-        );
-
-  static const String name = 'CreateLessonRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<CreateLessonRouteArgs>();
-      return CreateLessonScreen(
-        key: args.key,
-        id: args.id,
-        courseId: args.courseId,
-      );
-    },
-  );
-}
-
-class CreateLessonRouteArgs {
-  const CreateLessonRouteArgs({this.key, this.id, required this.courseId});
-
-  final Key? key;
-
-  final int? id;
-
-  final int courseId;
-
-  @override
-  String toString() {
-    return 'CreateLessonRouteArgs{key: $key, id: $id, courseId: $courseId}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! CreateLessonRouteArgs) return false;
-    return key == other.key && id == other.id && courseId == other.courseId;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ id.hashCode ^ courseId.hashCode;
 }
 
 /// generated route for
@@ -200,50 +139,6 @@ class HomeRoute extends PageRouteInfo<void> {
       return const HomeScreen();
     },
   );
-}
-
-/// generated route for
-/// [LessonInfoScreen]
-class LessonInfoRoute extends PageRouteInfo<LessonInfoRouteArgs> {
-  LessonInfoRoute({Key? key, required int id, List<PageRouteInfo>? children})
-      : super(
-          LessonInfoRoute.name,
-          args: LessonInfoRouteArgs(key: key, id: id),
-          initialChildren: children,
-        );
-
-  static const String name = 'LessonInfoRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<LessonInfoRouteArgs>();
-      return LessonInfoScreen(key: args.key, id: args.id);
-    },
-  );
-}
-
-class LessonInfoRouteArgs {
-  const LessonInfoRouteArgs({this.key, required this.id});
-
-  final Key? key;
-
-  final int id;
-
-  @override
-  String toString() {
-    return 'LessonInfoRouteArgs{key: $key, id: $id}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! LessonInfoRouteArgs) return false;
-    return key == other.key && id == other.id;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ id.hashCode;
 }
 
 /// generated route for
@@ -308,131 +203,4 @@ class ServiceRoute extends PageRouteInfo<void> {
       return const ServiceScreen();
     },
   );
-}
-
-/// generated route for
-/// [StudentCourseInfoScreen]
-class StudentCourseInfoRoute extends PageRouteInfo<StudentCourseInfoRouteArgs> {
-  StudentCourseInfoRoute({
-    Key? key,
-    required int id,
-    List<PageRouteInfo>? children,
-  }) : super(
-          StudentCourseInfoRoute.name,
-          args: StudentCourseInfoRouteArgs(key: key, id: id),
-          initialChildren: children,
-        );
-
-  static const String name = 'StudentCourseInfoRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<StudentCourseInfoRouteArgs>();
-      return StudentCourseInfoScreen(key: args.key, id: args.id);
-    },
-  );
-}
-
-class StudentCourseInfoRouteArgs {
-  const StudentCourseInfoRouteArgs({this.key, required this.id});
-
-  final Key? key;
-
-  final int id;
-
-  @override
-  String toString() {
-    return 'StudentCourseInfoRouteArgs{key: $key, id: $id}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! StudentCourseInfoRouteArgs) return false;
-    return key == other.key && id == other.id;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ id.hashCode;
-}
-
-/// generated route for
-/// [StudentProfileScreen]
-class StudentProfileRoute extends PageRouteInfo<void> {
-  const StudentProfileRoute({List<PageRouteInfo>? children})
-      : super(StudentProfileRoute.name, initialChildren: children);
-
-  static const String name = 'StudentProfileRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      return const StudentProfileScreen();
-    },
-  );
-}
-
-/// generated route for
-/// [StudentTestScreen]
-class StudentTestRoute extends PageRouteInfo<StudentTestRouteArgs> {
-  StudentTestRoute({
-    Key? key,
-    required int lessonId,
-    required int testId,
-    List<PageRouteInfo>? children,
-  }) : super(
-          StudentTestRoute.name,
-          args: StudentTestRouteArgs(
-            key: key,
-            lessonId: lessonId,
-            testId: testId,
-          ),
-          initialChildren: children,
-        );
-
-  static const String name = 'StudentTestRoute';
-
-  static PageInfo page = PageInfo(
-    name,
-    builder: (data) {
-      final args = data.argsAs<StudentTestRouteArgs>();
-      return StudentTestScreen(
-        key: args.key,
-        lessonId: args.lessonId,
-        testId: args.testId,
-      );
-    },
-  );
-}
-
-class StudentTestRouteArgs {
-  const StudentTestRouteArgs({
-    this.key,
-    required this.lessonId,
-    required this.testId,
-  });
-
-  final Key? key;
-
-  final int lessonId;
-
-  final int testId;
-
-  @override
-  String toString() {
-    return 'StudentTestRouteArgs{key: $key, lessonId: $lessonId, testId: $testId}';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    if (identical(this, other)) return true;
-    if (other is! StudentTestRouteArgs) return false;
-    return key == other.key &&
-        lessonId == other.lessonId &&
-        testId == other.testId;
-  }
-
-  @override
-  int get hashCode => key.hashCode ^ lessonId.hashCode ^ testId.hashCode;
 }

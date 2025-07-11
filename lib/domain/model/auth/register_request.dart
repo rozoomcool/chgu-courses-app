@@ -1,4 +1,4 @@
-import 'package:coursera/domain/model/user/user.dart';
+import 'package:eventrecs/domain/model/user/user.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'register_request.g.dart';

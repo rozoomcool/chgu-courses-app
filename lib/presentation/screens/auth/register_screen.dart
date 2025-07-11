@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coursera/domain/model/auth/register_request.dart';
-import 'package:coursera/domain/model/user/user.dart';
-import 'package:coursera/domain/state/auth/auth_cubit.dart';
-import 'package:coursera/router/app_router.dart';
-import 'package:coursera/utils/app_colors.dart';
-import 'package:coursera/utils/custom_scaffold_util.dart';
+import 'package:eventrecs/domain/model/auth/register_request.dart';
+import 'package:eventrecs/domain/model/user/user.dart';
+import 'package:eventrecs/domain/state/auth/auth_cubit.dart';
+import 'package:eventrecs/router/app_router.dart';
+import 'package:eventrecs/utils/app_colors.dart';
+import 'package:eventrecs/utils/custom_scaffold_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';

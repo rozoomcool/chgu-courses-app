@@ -1,20 +1,14 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coursera/domain/state/auth/auth_cubit.dart';
-import 'package:coursera/presentation/screens/auth/auth_screen.dart';
-import 'package:coursera/presentation/screens/auth/register_screen.dart';
-import 'package:coursera/presentation/screens/course_info/course_info_screen.dart';
-import 'package:coursera/presentation/screens/create_course/create_course_screen.dart';
-import 'package:coursera/presentation/screens/create_lesson/create_lesson_screen.dart';
-import 'package:coursera/presentation/screens/dashboard/dashboard_screen.dart';
-import 'package:coursera/presentation/screens/home/home_screen.dart';
-import 'package:coursera/presentation/screens/lesson_info/lesson_info_screen.dart';
-import 'package:coursera/presentation/screens/profile/profile_screen.dart';
-import 'package:coursera/presentation/screens/root/root_screen.dart';
-import 'package:coursera/presentation/screens/service/service_screen.dart';
-import 'package:coursera/presentation/screens/student_course_info/student_course_info_screen.dart';
-import 'package:coursera/presentation/screens/student_profile_screen/student_profile_screen.dart';
-import 'package:coursera/presentation/screens/student_test/student_test_screen.dart';
-import 'package:coursera/router/auth_route_guard.dart';
+import 'package:eventrecs/domain/state/auth/auth_cubit.dart';
+import 'package:eventrecs/presentation/screens/activity/activity_details_screen.dart';
+import 'package:eventrecs/presentation/screens/auth/auth_screen.dart';
+import 'package:eventrecs/presentation/screens/auth/register_screen.dart';
+import 'package:eventrecs/presentation/screens/dashboard/dashboard_screen.dart';
+import 'package:eventrecs/presentation/screens/home/home_screen.dart';
+import 'package:eventrecs/presentation/screens/profile/profile_screen.dart';
+import 'package:eventrecs/presentation/screens/root/root_screen.dart';
+import 'package:eventrecs/presentation/screens/service/service_screen.dart';
+import 'package:eventrecs/router/auth_route_guard.dart';
 import 'package:flutter/material.dart';
 
 // import '../domain/state/auth/auth_cubit.dart';
@@ -45,17 +39,13 @@ class AppRouter extends RootStackRouter {
             AutoRoute(path: 'profile', page: ProfileRoute.page),
             AutoRoute(path: 'service', page: ServiceRoute.page),
             AutoRoute(path: 'dashboard', page: DashboardRoute.page),
-            AutoRoute(path: 'student-profile', page: StudentProfileRoute.page),
           ],
         ),
-        AutoRoute(path: '/course-info', page: CourseInfoRoute.page),
-        AutoRoute(
-            path: '/student-course-info', page: StudentCourseInfoRoute.page),
-        AutoRoute(path: '/student-test', page: StudentTestRoute.page),
-        // AutoRoute(path: '/test', page: CourseInfoRoute.page),
-        AutoRoute(path: '/lesson-info', page: LessonInfoRoute.page),
-        AutoRoute(path: '/create-course', page: CreateCourseRoute.page),
-        AutoRoute(path: '/create-lesson', page: CreateLessonRoute.page),
+        CustomRoute(
+            page: ActivityDetailsRoute.page,
+            path: "/activity-details",
+            transitionsBuilder: TransitionsBuilders.slideBottom,
+            duration: Duration(milliseconds: 150)),
         CustomRoute(
           path: '/auth',
           page: AuthRoute.page,

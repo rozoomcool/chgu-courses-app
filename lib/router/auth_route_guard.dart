@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:coursera/domain/state/auth/auth_cubit.dart';
-import 'package:coursera/router/app_router.dart';
+import 'package:eventrecs/domain/state/auth/auth_cubit.dart';
+import 'package:eventrecs/router/app_router.dart';
 
 class AuthGuard extends AutoRouteGuard {
   final AuthState authState;

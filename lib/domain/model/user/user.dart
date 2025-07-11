@@ -1,7 +1,4 @@
-import 'package:coursera/domain/model/profile/profile.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../profile/profile.dart';
 
 part 'user.g.dart';
 
@@ -9,8 +6,7 @@ part 'user.g.dart';
 class User {
   const User(
     this.id,
-    this.password,
-    this.profile, {
+    this.password, {
     required this.email,
     required this.role,
   });
@@ -19,7 +15,6 @@ class User {
   final String email;
   final String? password;
   final String role;
-  final Profile? profile;
 
   factory User.fromJson(Map<String, Object?> json) => _$UserFromJson(json);
   Map<String, dynamic> toJson() => _$UserToJson(this);

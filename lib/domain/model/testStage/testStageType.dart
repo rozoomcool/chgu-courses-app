@@ -1,4 +1,0 @@
-enum TestStageType {
-  OPTIONAL,
-  MANUAL,
-}

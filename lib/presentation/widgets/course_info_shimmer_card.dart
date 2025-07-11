@@ -1,5 +1,5 @@
-import 'package:coursera/presentation/widgets/text_chip.dart';
-import 'package:coursera/utils/app_colors.dart';
+import 'package:eventrecs/presentation/widgets/text_chip.dart';
+import 'package:eventrecs/utils/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:shimmer/shimmer.dart';

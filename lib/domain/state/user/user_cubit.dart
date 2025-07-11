@@ -1,4 +1,4 @@
-import 'package:coursera/domain/model/user/user.dart';
+import 'package:eventrecs/domain/model/user/user.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

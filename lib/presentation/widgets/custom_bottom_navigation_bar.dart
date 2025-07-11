@@ -1,8 +1,10 @@
 import 'dart:ui';
 
 import 'package:eventrecs/presentation/widgets/animated_scale_wrapper.dart';
+import 'package:eventrecs/presentation/widgets/glossy_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:glossy/glossy.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar(
@@ -48,23 +50,15 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      child: BackdropFilter(
-        blendMode: BlendMode.src,
-        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.black.withAlpha(70),
-            borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-          ),
+    return Transform.translate(
+      offset: Offset(0, 1),
+      child: SizedBox(
+        height: kBottomNavigationBarHeight + kToolbarHeight,
           width: double.infinity,
-          height: kBottomNavigationBarHeight +
-              MediaQuery.of(context).viewPadding.bottom,
-          padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewPadding.bottom),
+        child: GlossyCard(
+          strokeAlign: BorderSide.strokeAlignInside,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(32), topRight: Radius.circular(32)),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,6 +68,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                   child: AnimatedScaleWrapper(
                     onTap: () => widget.onTap(item.position),
                     child: Container(
+                      padding: EdgeInsets.only(bottom: kBottomNavigationBarHeight/2),
                       color: Colors.transparent,
                       width: double.infinity,
                       height: double.infinity,
@@ -89,7 +84,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                                 : item.defaultIcon,
                             size: 32,
                             color: item.position == widget.selectedIndex
-                                ? Theme.of(context).primaryColor.withAlpha(200)
+                                ? Colors.white
                                 : Colors.white60,
                           ),
                           // Text(item.label)

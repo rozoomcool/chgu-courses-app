@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eventrecs/presentation/widgets/glossy_card.dart';
 import 'package:flutter/material.dart';
+import 'package:glossy/glossy.dart';
 
 @RoutePage()
 class ServiceScreen extends StatefulWidget {
@@ -17,40 +19,100 @@ class _ServiceScreenState extends State<ServiceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.transparent,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24.0),
           child: Container(
-            padding: const EdgeInsets.all(24),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text("Найти занятие"),
-                SizedBox(height: 8),
-                Text("Ответь на 3 вопроса, и я подберу идею"),
-                SizedBox(height: 24),
-                _buildSectionTitle("Когда?"),
-                _buildChoiceChips(['Сегодня днем', 'Вечером', 'На выходных'], selectedTime, (val) => setState(() => selectedTime = val)),
-                SizedBox(height: 16),
-                _buildSectionTitle("Бюджет?"),
-                _buildChoiceChips(['Бесплатно', 'До 1000 ₽', 'До 3000 ₽', 'Любой'], selectedBudget, (val) => setState(() => selectedBudget = val)),
-                SizedBox(height: 16),
-                _buildSectionTitle("Настроение?"),
-                Slider(
-                  value: moodValue,
-                  onChanged: (val) => setState(() => moodValue = val),
-                  min: 0,
-                  max: 1,
-                ),
-                Text(
-                  moodValue < 0.33
-                      ? "Расслабиться"
-                      : moodValue < 0.66
-                          ? "Что-то интересное"
-                          : "Адреналиновый маньяк",
+                GlossyCard(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(12),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Text(
+                            "Найти занятие",
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          SizedBox(height: 12),
+                          Text(
+                            "Ответь на 3 вопроса, и я подберу идею",
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(height: 24),
-                _buildButton("Поехали!"),
+                GlossyCard(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(12),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          _buildSectionTitle("Когда?"),
+                          _buildChoiceChips(
+                              ['Сегодня днем', 'Вечером', 'На выходных'],
+                              selectedTime,
+                              (val) => setState(() => selectedTime = val)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                GlossyCard(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(12),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          _buildSectionTitle("Бюджет?"),
+                          _buildChoiceChips(
+                              ['Бесплатно', 'До 1000 ₽', 'До 3000 ₽', 'Любой'],
+                              selectedBudget,
+                              (val) => setState(() => selectedBudget = val)),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16),
+                GlossyCard(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Padding(
+                    padding: EdgeInsetsGeometry.all(12),
+                    child: Center(
+                      child: Column(
+                        children: [
+                          _buildSectionTitle("Настроение?"),
+                          Slider(
+                            value: moodValue,
+                            onChanged: (val) => setState(() => moodValue = val),
+                            min: 0,
+                            max: 1,
+                          ),
+                          Text(
+                            moodValue < 0.33
+                                ? "Расслабиться"
+                                : moodValue < 0.66
+                                    ? "Что-то интересное"
+                                    : "Адреналиновый маньяк",
+                          ),
+                          SizedBox(height: 24),
+                          _buildButton("Поехали!"),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -62,11 +124,15 @@ class _ServiceScreenState extends State<ServiceScreen> {
   Widget _buildSectionTitle(String title) {
     return Align(
       alignment: Alignment.centerLeft,
-      child: Text(title),
+      child: Text(
+        title,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 20),
+      ),
     );
   }
 
-  Widget _buildChoiceChips(List<String> options, String selected, Function(String) onSelected) {
+  Widget _buildChoiceChips(
+      List<String> options, String selected, Function(String) onSelected) {
     return Wrap(
       spacing: 8,
       children: options.map((opt) {

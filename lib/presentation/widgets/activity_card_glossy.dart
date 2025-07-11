@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:eventrecs/presentation/widgets/glossy_card.dart';
 import 'package:eventrecs/router/app_router.dart';
 import 'package:eventrecs/utils/app_colors.dart';
 import 'package:flutter/material.dart';
@@ -46,10 +47,8 @@ class GlossyActivityCard extends StatelessWidget {
               previewUrl: previewUrl,
               description: description));
         },
-        child: GlossyContainer(
+        child: GlossyCard(
           borderRadius: BorderRadius.circular(16),
-          height: 400,
-          width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

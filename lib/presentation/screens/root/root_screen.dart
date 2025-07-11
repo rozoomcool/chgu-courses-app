@@ -19,9 +19,7 @@ final gradients = [
   GradientContainer(
       alignment: Alignment.topLeft, color: Colors.teal, radius: 0.85),
   GradientContainer(
-      alignment: Alignment.topRight,
-      color: Colors.pink,
-      radius: 0.8),
+      alignment: Alignment.topRight, color: Colors.pink, radius: 0.8),
   GradientContainer(
       alignment: Alignment.bottomLeft,
       color: Colors.red.withAlpha(100),
@@ -59,11 +57,11 @@ class RootScreen extends StatelessWidget {
                           image: AssetImage("assets/rainy.jpg"),
                           fit: BoxFit.cover)),
                 ),
-                // Container(
-                //   decoration: BoxDecoration(
-                //     color: Color(0xFF121212), // тёмный полупрозрачный слой
-                //   ),
-                // ),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black26, // тёмный полупрозрачный слой
+                  ),
+                ),
                 // ...gradients,
                 AutoTabsScaffold(
                   // scaffoldKey: GetIt.I<CustomScaffoldUtil>().key,
@@ -129,73 +127,25 @@ class RootScreen extends StatelessWidget {
                   // ),
                   // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
                   bottomNavigationBuilder: (context, tabsRouter) {
-                    return Transform.translate(
-                      offset: Offset(0, 1),
-                      child: GlossyContainer(
-                        height: kBottomNavigationBarHeight + kToolbarHeight,
-                        width: double.infinity,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(32),
-                          topRight: Radius.circular(32)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.max,
-                          children: [
-                            Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {},
-                                  borderRadius: BorderRadius.circular(32),
-                                  highlightColor: Colors.black38,
-                                  child: Padding(
-                                  padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight/2),
-                                  child: Center(child: Icon(Iconsax.home)),
-                                ))),
-                           Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {},
-                                  borderRadius: BorderRadius.circular(32),
-                                  highlightColor: Colors.black38,
-                                  child: Padding(
-                                  padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight/2),
-                                  child: Center(child: Icon(Iconsax.search_favorite)),
-                                ))),
-                            Expanded(
-                                flex: 1,
-                                child: InkWell(
-                                  onTap: () {},
-                                  borderRadius: BorderRadius.circular(32),
-                                  highlightColor: Colors.black38,
-                                  child: Padding(
-                                  padding: const EdgeInsets.only(bottom: kBottomNavigationBarHeight/2),
-                                  child: Center(child: Icon(Iconsax.user)),
-                                ))),
-                          ],
-                        ),
-                      ),
-                    );
                     return CustomBottomNavigationBar(
-                selectedIndex: tabsRouter.activeIndex,
-                onTap: tabsRouter.setActiveIndex,
-                items: [
-                  CustomBottomNavigationBarItem(
-                      label: 'Statistics',
-                      selectedIcon: Iconsax.activity,
-                      defaultIcon: Iconsax.activity_copy),
-                  CustomBottomNavigationBarItem(
-                      label: 'Home',
-                      selectedIcon: Iconsax.home_1,
-                      defaultIcon: Iconsax.home_copy),
-                  CustomBottomNavigationBarItem(
-                      label: 'Settings',
-                      selectedIcon: Iconsax.setting,
-                      defaultIcon: Iconsax.setting_copy),
-                  // CustomBottomNavigationBarItem(
-                  //     label: 'Statistics', selectedIcon: Icons.graphic_eq_rounded, defaultIcon: Icons.graphic_eq_outlined),
-                ]);
-                    
+                        selectedIndex: tabsRouter.activeIndex,
+                        onTap: tabsRouter.setActiveIndex,
+                        items: [
+                          CustomBottomNavigationBarItem(
+                              label: 'Statistics',
+                              selectedIcon: Iconsax.home,
+                              defaultIcon: Iconsax.home),
+                          CustomBottomNavigationBarItem(
+                              label: 'Home',
+                              selectedIcon: Iconsax.search_favorite,
+                              defaultIcon: Iconsax.search_favorite),
+                          CustomBottomNavigationBarItem(
+                              label: 'Settings',
+                              selectedIcon: Iconsax.user,
+                              defaultIcon: Iconsax.user),
+                          // CustomBottomNavigationBarItem(
+                          //     label: 'Statistics', selectedIcon: Icons.graphic_eq_rounded, defaultIcon: Icons.graphic_eq_outlined),
+                        ]);
                   },
                 ),
               ],

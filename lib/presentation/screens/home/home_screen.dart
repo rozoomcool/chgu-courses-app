@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:eventrecs/presentation/widgets/activity_card_glossy.dart';
+import 'package:eventrecs/presentation/widgets/glossy_card.dart';
 import 'package:flutter/material.dart';
 import 'package:glossy/glossy.dart';
 import 'package:iconsax/iconsax.dart';
@@ -51,42 +52,46 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Transform.translate(
               offset: Offset(0, -1),
-              child: GlossyContainer(
+              child: SizedBox(
                 height: 220,
-                width: double.infinity,
-                borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(32),
-                    bottomRight: Radius.circular(32)),
-                child: SafeArea(
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(24.0),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.max,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        spacing: 12,
-                        children: [
-                          Text(
-                            "Найти занятие",
-                            style: Theme.of(context)
-                                .textTheme
-                                .headlineSmall
-                                ?.copyWith(
-                                    fontWeight: FontWeight.w900),
-                          ),
-                          TextField(
-                            decoration: InputDecoration(
-                              filled: false,
-                              prefixIcon: Icon(Iconsax.search_favorite),
-                              // icon: Icon(Iconsax.search_favorite),
-                              hint: Text("Введите название активности"),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(20)
-                              )
+                child: GlossyCard(
+                  strokeAlign: BorderSide.strokeAlignInside,
+                  // width: double.infinity,
+                  border: Border.all(strokeAlign: BorderSide.strokeAlignOutside),
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(32),
+                      bottomRight: Radius.circular(32)),
+                  child: SafeArea(
+                    child: Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(24.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          spacing: 12,
+                          children: [
+                            Text(
+                              "Найти занятие",
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headlineMedium
+                                  ?.copyWith(
+                                      fontWeight: FontWeight.w900),
                             ),
-                          )
-                        ],
+                            TextField(
+                              decoration: InputDecoration(
+                                filled: false,
+                                prefixIcon: Icon(Iconsax.search_favorite),
+                                // icon: Icon(Iconsax.search_favorite),
+                                hint: Text("Введите название активности"),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(20)
+                                )
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),

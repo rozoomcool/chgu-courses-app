@@ -5,7 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 // ignore: prefer_function_declarations_over_variables
 final customTheme = (BuildContext context, Brightness brightness) => ThemeData(
     colorScheme: ColorScheme.fromSeed(
-        seedColor: AppColors.primaryColor, brightness: brightness),
+        seedColor: AppColors.primaryColor, brightness: brightness
+        ),
     useMaterial3: true,
     brightness: brightness,
     textTheme: GoogleFonts.montserratTextTheme().apply(
